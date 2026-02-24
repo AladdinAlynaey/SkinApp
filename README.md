@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="frontend/images/favicon.png" alt="SkinDiagnosis Logo" width="120" height="120" style="border-radius: 20px;">
-</p>
-
 <h1 align="center">🔬 SkinDiagnosis AI</h1>
 
 <p align="center">
@@ -37,12 +33,12 @@
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│                    SkinDiagnosis AI                           │
+│                    SkinDiagnosis AI                          │
 │                                                              │
-│   📸 Upload  →  🤖 AI Analysis  →  👨‍⚕️ Doctor Review  →  💊 Results  │
+│    Upload  →   AI Analysis  →   Doctor Review  →   Results   │
 │                                                              │
-│   ▸ 98% Accuracy    ▸ 100+ Conditions    ▸ 2min Results     │
-│   ▸ Bilingual       ▸ Multi-AI           ▸ Wallet System    │
+│   ▸ 98% Accuracy    ▸ 100+ Conditions    ▸ 2min Results      │
+│   ▸ Bilingual       ▸ Multi-AI           ▸ Wallet System     │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -189,74 +185,74 @@ The heart of SkinDiagnosis is a **5-stage sequential AI pipeline** with mandator
 
 ```
                           ┌─────────────────┐
-                          │   📸 Image       │
-                          │   Uploaded       │
+                          │  📸 Image       │
+                          │   Uploaded      │
                           └────────┬────────┘
                                    │
                     ┌──────────────▼──────────────┐
-                    │  🚦 STAGE 0: Validation Gate │
-                    │  ─────────────────────────── │
-                    │  • Is this a skin image?      │
-                    │  • Is quality sufficient?     │
-                    │  • MANDATORY: Must pass       │
-                    └──────────┬─────────┬─────────┘
+                    │   STAGE 0: Validation Gate  │
+                    │  ────────────────────────── │
+                    │  • Is this a skin image?    │
+                    │  • Is quality sufficient?   │
+                    │  • MANDATORY: Must pass     │
+                    └──────────┬─────────┬────────┘
                                │         │
                           ✅ PASS    ❌ FAIL
                                │         │
                                │    ┌────▼────┐
-                               │    │ REJECTED │
+                               │    │REJECTED │
                                │    └─────────┘
                                │
                     ┌──────────▼──────────────┐
-                    │  🔍 STAGE 1: Classifier   │
-                    │  ─────────────────────── │
-                    │  Normal vs Abnormal       │
-                    │  Confidence scoring       │
-                    └──────────┬─────────┬─────┘
+                    │   STAGE 1: Classifier   │
+                    │  ────────────────────── │
+                    │  Normal vs Abnormal     │
+                    │  Confidence scoring     │
+                    └──────────┬─────────┬────┘
                                │         │
                           ABNORMAL    NORMAL
                                │         │
                                │    ┌────▼────────────┐
-                               │    │ Skip to Stage 4  │
+                               │    │ Skip to Stage 4 │
                                │    └────┬────────────┘
                                │         │
                     ┌──────────▼──────────────┐
-                    │  📂 STAGE 2: Category     │
-                    │  ─────────────────────── │
-                    │  • Infectious             │
-                    │  • Inflammatory           │
-                    │  • Neoplastic             │
-                    │  • Allergic               │
-                    │  • Autoimmune             │
-                    │  • Pigmentary             │
-                    │  • Genetic                │
+                    │    STAGE 2: Categor     │
+                    │  ────────────────────── │
+                    │  • Infectious           │
+                    │  • Inflammatory         │
+                    │  • Neoplastic           │
+                    │  • Allergic             │
+                    │  • Autoimmune           │
+                    │  • Pigmentary           │
+                    │  • Genetic              │
                     └──────────┬──────────────┘
                                │
                     ┌──────────▼──────────────┐
-                    │  🎯 STAGE 3: Diagnosis    │
-                    │  ─────────────────────── │
-                    │  Fine-grained disease ID  │
-                    │  Severity assessment      │
-                    │  Subcategory mapping      │
+                    │   STAGE 3: Diagnosis    │
+                    │  ────────────────────── │
+                    │ Fine-grained disease ID │
+                    │  Severity assessment    │
+                    │  Subcategory mapping    │
                     └──────────┬──────────────┘
                                │
-                    ┌──────────▼──────────────┐
-                    │  🧬 STAGE 4: AI Fusion    │
-                    │  ─────────────────────── │
+                    ┌──────────▼────────────────┐
+                    │     STAGE 4: AI Fusion    │
+                    │  ──────────────────────── │
                     │  Combine all stage data   │
-                    │  + Patient medical history │
+                    │ + Patient medical history │
                     │  = Final Diagnosis        │
                     │  + Treatment Plan         │
                     │  + Recommendations        │
-                    └──────────┬──────────────┘
+                    └──────────┬────────────────┘
                                │
                     ┌──────────▼──────────────────┐
-                    │  🏁 RESULT                    │
-                    │  ──────────────────────────── │
-                    │  ✅ Completed (AI-only)       │
-                    │  ─── OR ───                   │
-                    │  ⏳ Awaiting Doctor Review     │
-                    └──────────────────────────────┘
+                    │   RESULT                    │
+                    │  ────────────────────────── │
+                    │    Completed (AI-only)      │
+                    │  ─── OR ───                 │
+                    │   Awaiting Doctor Review    │
+                    └─────────────────────────────┘
 ```
 
 ### AI Provider Priority & Failover
@@ -267,28 +263,28 @@ The heart of SkinDiagnosis is a **5-stage sequential AI pipeline** with mandator
 │                                                  │
 │  Request ──▶ Provider 1 (Primary)                │
 │                  │                               │
-│              ✅ Success? ──▶ Return result        │
-│              ❌ Fail?                             │
+│              ✅ Success? ──▶ Return result      │
+│              ❌ Fail?                           │
 │                  │                               │
 │              Provider 2 (Fallback #1)            │
 │                  │                               │
-│              ✅ Success? ──▶ Return result        │
-│              ❌ Fail?                             │
+│              ✅ Success? ──▶ Return result      │
+│              ❌ Fail?                           │
 │                  │                               │
 │              Provider 3 (Fallback #2)            │
 │                  │                               │
-│              ✅ Success? ──▶ Return result        │
-│              ❌ All failed ──▶ Error response     │
+│              ✅ Success? ──▶ Return result      │
+│              ❌ All failed ──▶ Error response   │
 │                                                  │
 │  Providers:                                      │
-│  ┌─────────────┐ ┌──────────┐ ┌──────────┐      │
-│  │ 🟣 OpenRouter│ │ 🔵 Gemini│ │ 🟢 Groq  │      │
-│  │ Claude 3    │ │ 1.5 Flash│ │ Llama 3.1│      │
-│  │ Haiku       │ │          │ │ 70B      │      │
-│  └─────────────┘ └──────────┘ └──────────┘      │
+│  ┌─────────────┐ ┌──────────┐ ┌──────────┐       │
+│  │  OpenRouter │ │  Gemini  │ │   Groq   │       │
+│  │ Claude 3    │ │ 1.5 Flash│ │ Llama 3.1│       │
+│  │ Haiku       │ │          │ │ 70B      │       │
+│  └─────────────┘ └──────────┘ └──────────┘       │
 │                                                  │
-│  ⚡ Exponential backoff • 🔄 Configurable retry  │
-│  📊 Per-request logging • 🎛️ Admin-configurable  │
+│  ⚡ Exponential backoff • 🔄 Configurable retry │
+│  📊 Per-request logging • 🎛️ Admin-configurable │
 └──────────────────────────────────────────────────┘
 ```
 
@@ -604,21 +600,10 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 
 ---
 
-## 👤 Author
+<div align="center">
 
-**Alaadin Alynaey** — [GitHub](https://github.com/AladdinAlynaey)
+**Built by [Alaadin Alynaey](https://alaadin-alynaey.site)**
 
----
+⭐ Star this repo if you find it useful!
 
-<p align="center">
-  <strong>Built with ❤️ and AI</strong>
-  <br>
-  <sub>Powered by OpenRouter • Google Gemini • Groq • Flask</sub>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Made_with-Python-3776ab?style=flat-square&logo=python&logoColor=white" alt="Python">
-  <img src="https://img.shields.io/badge/AI-Multi_Provider-ff6b6b?style=flat-square" alt="AI">
-  <img src="https://img.shields.io/badge/i18n-EN%20%7C%20عربي-ffa726?style=flat-square" alt="i18n">
-  <img src="https://img.shields.io/badge/Status-Production_Ready-2ecc71?style=flat-square" alt="Status">
-</p>
+</div>

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+    <meta name="theme-color" content="#0a0f1a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Dashboard - SkinDiagnosis</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <link rel="apple-touch-icon" href="../images/favicon.png">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Config first -->
+    <script src="../js/config.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/layout.css">
+</head>
+
+<body>
+    <div class="dashboard">
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <a href="/" class="sidebar-logo">
+                <span class="logo-icon">🔬</span>
+                <span class="logo-text">SkinDiagnosis</span>
+            </a>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <a href="dashboard.html" class="nav-item active">
+                        <span class="nav-icon">🏠</span>
+                        <span data-i18n="dashboard">Dashboard</span>
+                    </a>
+                    <a href="new-diagnosis.html" class="nav-item">
+                        <span class="nav-icon">📷</span>
+                        <span data-i18n="newDiagnosis">New Diagnosis</span>
+                    </a>
+                    <a href="history.html" class="nav-item">
+                        <span class="nav-icon">📋</span>
+                        <span data-i18n="history">History</span>
+                    </a>
+                    <a href="wallet.html" class="nav-item">
+                        <span class="nav-icon">💳</span>
+                        <span data-i18n="wallet">Wallet</span>
+                    </a>
+                    <a href="assistant.html" class="nav-item">
+                        <span class="nav-icon">🤖</span>
+                        <span data-i18n="assistant">AI Assistant</span>
+                    </a>
+                    <a href="profile.html" class="nav-item">
+                        <span class="nav-icon">👤</span>
+                        <span data-i18n="profile">Profile</span>
+                    </a>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="avatar" id="user-avatar">--</div>
+                    <div class="sidebar-user-info">
+                        <div class="sidebar-user-name" id="user-name">Loading...</div>
+                        <div class="sidebar-user-role" data-i18n="patient">Patient</div>
+                    </div>
+                </div>
+                <a href="#" class="nav-item" id="logout-btn" style="margin-top: var(--space-3);">
+                    <span class="nav-icon">🚪</span>
+                    <span data-i18n="logout">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+            <button class="menu-toggle" id="menu-toggle" aria-label="Open menu">☰</button>
+            <span class="mobile-header-title">Dashboard</span>
+            <button class="btn-icon" id="theme-toggle-mobile" aria-label="Toggle theme">
+                <span class="icon-sun">☀️</span>
+                <span class="icon-moon">🌙</span>
+            </button>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Banner Slider -->
+            <div class="banner-slider">
+                <div class="banner-slides" id="banner-slides">
+                    <div class="banner-slide">
+                        <img src="../images/hero-banner.png" alt="AI Skin Diagnosis">
+                        <div class="banner-overlay">
+                            <div class="banner-content">
+                                <h2 id="greeting-name">Welcome back!</h2>
+                                <p>Ready for your next skin analysis</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="banner-slide">
+                        <img src="../images/banner-slide-2.png" alt="Expert Doctors">
+                        <div class="banner-overlay">
+                            <div class="banner-content">
+                                <h2>Expert Verified</h2>
+                                <p>Get verification from certified dermatologists</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="banner-slide">
+                        <img src="../images/banner-slide-3.png" alt="Fast Results">
+                        <div class="banner-overlay">
+                            <div class="banner-content">
+                                <h2>Fast Results</h2>
+                                <p>Get diagnosis in under 2 minutes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="banner-dots" id="banner-dots">
+                    <button class="banner-dot active" data-slide="0"></button>
+                    <button class="banner-dot" data-slide="1"></button>
+                    <button class="banner-dot" data-slide="2"></button>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">Diagnoses</span>
+                        <div class="stat-card-icon">📊</div>
+                    </div>
+                    <div class="stat-card-value" id="stat-diagnoses">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">Pending</span>
+                        <div class="stat-card-icon" style="background: var(--warning-light);">⏳</div>
+                    </div>
+                    <div class="stat-card-value" id="stat-pending">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">Balance</span>
+                        <div class="stat-card-icon" style="background: var(--success-light);">💰</div>
+                    </div>
+                    <div class="stat-card-value" id="stat-balance">$0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">AI Chat</span>
+                        <div class="stat-card-icon" style="background: rgba(139, 92, 246, 0.1);">🤖</div>
+                    </div>
+                    <div class="stat-card-value" style="font-size: var(--font-size-base);">24/7</div>
+                </div>
+            </div>
+
+            <!-- Recent Diagnoses -->
+            <div class="card">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3);">
+                    <h3 class="card-title">Recent Diagnoses</h3>
+                    <a href="history.html" style="font-size: var(--font-size-sm);">View All →</a>
+                </div>
+                <div id="recent-diagnoses">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📷</div>
+                        <h4 class="empty-state-title">No diagnoses yet</h4>
+                        <p class="empty-state-desc">Tap the + button below to start</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation - With Theme & Language Toggle -->
+        <nav class="bottom-nav">
+            <!-- Home -->
+            <a href="dashboard.html" class="bottom-nav-item active">
+                <span class="bottom-nav-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                        <polyline points="9 22 9 12 15 12 15 22" />
+                    </svg>
+                </span>
+                <span>Home</span>
+            </a>
+
+            <!-- Language Toggle -->
+            <button class="bottom-nav-item" id="lang-toggle-bottom" aria-label="Toggle Language">
+                <span class="bottom-nav-icon">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="2" y1="12" x2="22" y2="12" />
+                        <path
+                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                    </svg>
+                </span>
+                <span id="lang-label-bottom">عربي</span>
+            </button>
+
+            <!-- Big Center Button -->
+            <div class="bottom-nav-center">
+                <a href="new-diagnosis.html" class="bottom-nav-center-btn" aria-label="New Diagnosis">
+                    <svg viewBox="0 0 24 24">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                </a>
+            </div>
+
+            <!-- Theme Toggle -->
+            <button class="bottom-nav-item" id="theme-toggle-bottom" aria-label="Toggle Theme">
+                <span class="bottom-nav-icon">
+                    <svg viewBox="0 0 24 24" id="theme-icon-sun">
+                        <circle cx="12" cy="12" r="5" />
+                        <line x1="12" y1="1" x2="12" y2="3" />
+                        <line x1="12" y1="21" x2="12" y2="23" />
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                        <line x1="1" y1="12" x2="3" y2="12" />
+                        <line x1="21" y1="12" x2="23" y2="12" />
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                    </svg>
+                    <svg viewBox="0 0 24 24" id="theme-icon-moon" style="display:none;">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                </span>
+                <span id="theme-label-bottom">Light</span>
+            </button>
+
+            <!-- Settings/Profile -->
+            <a href="profile.html" class="bottom-nav-item">
+                <span class="bottom-nav-icon">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="3" />
+                        <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                    </svg>
+                </span>
+                <span>Settings</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/i18n.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        // Require auth
+        if (!Auth.requireAuth(['patient'])) {
+            throw new Error('Unauthorized');
+        }
+
+        // Sidebar toggle
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        const menuToggle = document.getElementById('menu-toggle');
+
+        function openSidebar() {
+            sidebar.classList.add('open');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        menuToggle.addEventListener('click', openSidebar);
+        overlay.addEventListener('click', closeSidebar);
+
+        // Theme toggle for mobile header
+        const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+        if (themeToggleMobile) {
+            themeToggleMobile.addEventListener('click', () => Theme.toggle());
+        }
+
+        // Bottom nav theme toggle
+        const themeToggleBottom = document.getElementById('theme-toggle-bottom');
+        if (themeToggleBottom) {
+            themeToggleBottom.addEventListener('click', () => {
+                Theme.toggle();
+                updateBottomNavIcons();
+            });
+        }
+
+        // Bottom nav language toggle
+        const langToggleBottom = document.getElementById('lang-toggle-bottom');
+        if (langToggleBottom) {
+            langToggleBottom.addEventListener('click', () => {
+                i18n.toggle();
+                updateBottomNavIcons();
+            });
+        }
+
+        // Update bottom nav icons based on current state
+        function updateBottomNavIcons() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const currentLang = document.documentElement.lang;
+
+            // Update theme icon
+            const sunIcon = document.getElementById('theme-icon-sun');
+            const moonIcon = document.getElementById('theme-icon-moon');
+            const themeLabel = document.getElementById('theme-label-bottom');
+            if (sunIcon && moonIcon && themeLabel) {
+                if (currentTheme === 'dark') {
+                    sunIcon.style.display = 'block';
+                    moonIcon.style.display = 'none';
+                    themeLabel.textContent = 'Light';
+                } else {
+                    sunIcon.style.display = 'none';
+                    moonIcon.style.display = 'block';
+                    themeLabel.textContent = 'Dark';
+                }
+            }
+
+            // Update language label
+            const langLabel = document.getElementById('lang-label-bottom');
+            if (langLabel) {
+                langLabel.textContent = currentLang === 'en' ? 'عربي' : 'EN';
+            }
+        }
+
+        // Initialize bottom nav icons
+        updateBottomNavIcons();
+
+        // Banner Slider
+        let currentSlide = 0;
+        const slides = document.getElementById('banner-slides');
+        const dots = document.querySelectorAll('.banner-dot');
+        const totalSlides = 3;
+
+        function goToSlide(index) {
+            currentSlide = index;
+            // Always use negative direction since slider container is forced LTR
+            slides.style.transform = `translateX(-${index * 100}%)`;
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+
+        // Auto-advance slider
+        setInterval(() => {
+            goToSlide((currentSlide + 1) % totalSlides);
+        }, 5000);
+
+        // Dot click handlers
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                goToSlide(parseInt(dot.dataset.slide));
+            });
+        });
+
+        // Touch swipe support
+        let touchStartX = 0;
+        const sliderEl = document.querySelector('.banner-slider');
+        sliderEl.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        });
+        sliderEl.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0 && currentSlide < totalSlides - 1) {
+                    goToSlide(currentSlide + 1);
+                } else if (diff < 0 && currentSlide > 0) {
+                    goToSlide(currentSlide - 1);
+                }
+            }
+        });
+
+        // Load user info
+        const user = Auth.getCurrentUser();
+        if (user) {
+            const firstName = user.first_name || 'User';
+            const fullName = `${user.first_name || ''} ${user.last_name || ''}`.trim();
+            document.getElementById('greeting-name').textContent = `Welcome, ${firstName}!`;
+            document.getElementById('user-name').textContent = fullName || user.email;
+            document.getElementById('user-avatar').textContent =
+                (user.first_name?.[0] || '') + (user.last_name?.[0] || '') || '?';
+        }
+
+        // Load dashboard
+        async function loadDashboard() {
+            try {
+                const walletResult = await API.get('/wallet/balance');
+                if (walletResult.success) {
+                    document.getElementById('stat-balance').textContent =
+                        `$${walletResult.data.balance || 0}`;
+                }
+            } catch (e) { }
+
+            try {
+                const historyResult = await API.get('/diagnosis/history?limit=5');
+                if (historyResult.success && historyResult.data.diagnoses) {
+                    const diagnoses = historyResult.data.diagnoses;
+                    document.getElementById('stat-diagnoses').textContent = historyResult.data.total;
+
+                    const pending = diagnoses.filter(d => d.status === 'processing').length;
+                    document.getElementById('stat-pending').textContent = pending;
+
+                    if (diagnoses.length > 0) {
+                        const container = document.getElementById('recent-diagnoses');
+                        container.innerHTML = diagnoses.map(d => `
+                            <a href="result.html?id=${d.id}" class="list-item" style="text-decoration: none;">
+                                <div class="list-item-icon">
+                                    ${d.status === 'completed' ? '✅' : d.status === 'failed' ? '❌' : '⏳'}
+                                </div>
+                                <div class="list-item-content">
+                                    <div class="list-item-title">${d.pipeline?.stage4?.diagnosis?.name?.en || d.pipeline?.stage3?.disease_name?.en || 'Processing...'}</div>
+                                    <div class="list-item-subtitle">${new Date(d.created_at).toLocaleDateString()}</div>
+                                </div>
+                                <div class="list-item-action">
+                                    <span class="badge badge-${d.status === 'completed' ? 'success' : d.status === 'failed' ? 'error' : 'warning'}">${d.status}</span>
+                                </div>
+                            </a>
+                        `).join('');
+                    }
+                }
+            } catch (e) { }
+        }
+
+        loadDashboard();
+
+        // Logout
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            Auth.logout();
+        });
+
+        // Close sidebar on nav click
+        document.querySelectorAll('.sidebar .nav-item').forEach(item => {
+            item.addEventListener('click', closeSidebar);
+        });
+    </script>
+</body>
+
+</html>

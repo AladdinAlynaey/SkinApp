@@ -1,0 +1,356 @@
+{
+  "version": 1,
+  "last_updated": "2026-02-08T07:54:04.087988",
+  "categories": [
+    {
+      "id": "infectious",
+      "name": {
+        "en": "Infectious Diseases",
+        "ar": "الأمراض المعدية"
+      },
+      "subcategories": [
+        {
+          "id": "bacterial",
+          "name": {
+            "en": "Bacterial",
+            "ar": "بكتيرية"
+          }
+        },
+        {
+          "id": "viral",
+          "name": {
+            "en": "Viral",
+            "ar": "فيروسية"
+          }
+        },
+        {
+          "id": "fungal",
+          "name": {
+            "en": "Fungal",
+            "ar": "فطرية"
+          }
+        },
+        {
+          "id": "parasitic",
+          "name": {
+            "en": "Parasitic",
+            "ar": "طفيلية"
+          }
+        }
+      ]
+    },
+    {
+      "id": "inflammatory",
+      "name": {
+        "en": "Inflammatory Diseases",
+        "ar": "الأمراض الالتهابية"
+      },
+      "subcategories": [
+        {
+          "id": "eczema",
+          "name": {
+            "en": "Eczema",
+            "ar": "أكزيما"
+          }
+        },
+        {
+          "id": "psoriasis",
+          "name": {
+            "en": "Psoriasis",
+            "ar": "صدفية"
+          }
+        },
+        {
+          "id": "dermatitis",
+          "name": {
+            "en": "Dermatitis",
+            "ar": "التهاب الجلد"
+          }
+        }
+      ]
+    },
+    {
+      "id": "neoplastic",
+      "name": {
+        "en": "Neoplastic (Tumors)",
+        "ar": "الأورام"
+      },
+      "subcategories": [
+        {
+          "id": "benign",
+          "name": {
+            "en": "Benign",
+            "ar": "حميدة"
+          }
+        },
+        {
+          "id": "malignant",
+          "name": {
+            "en": "Malignant",
+            "ar": "خبيثة"
+          }
+        },
+        {
+          "id": "premalignant",
+          "name": {
+            "en": "Pre-malignant",
+            "ar": "ما قبل السرطان"
+          }
+        }
+      ]
+    },
+    {
+      "id": "allergic",
+      "name": {
+        "en": "Allergic Reactions",
+        "ar": "ردود الفعل التحسسية"
+      },
+      "subcategories": [
+        {
+          "id": "urticaria",
+          "name": {
+            "en": "Urticaria",
+            "ar": "الشرى"
+          }
+        },
+        {
+          "id": "contact",
+          "name": {
+            "en": "Contact Allergy",
+            "ar": "حساسية التلامس"
+          }
+        }
+      ]
+    },
+    {
+      "id": "autoimmune",
+      "name": {
+        "en": "Autoimmune Diseases",
+        "ar": "أمراض المناعة الذاتية"
+      },
+      "subcategories": [
+        {
+          "id": "lupus",
+          "name": {
+            "en": "Lupus",
+            "ar": "الذئبة"
+          }
+        },
+        {
+          "id": "vitiligo",
+          "name": {
+            "en": "Vitiligo",
+            "ar": "البهاق"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pigmentary",
+      "name": {
+        "en": "Pigmentary Disorders",
+        "ar": "اضطرابات التصبغ"
+      },
+      "subcategories": []
+    },
+    {
+      "id": "genetic",
+      "name": {
+        "en": "Genetic/Hereditary",
+        "ar": "الأمراض الوراثية"
+      },
+      "subcategories": []
+    }
+  ],
+  "diseases": [
+    {
+      "id": "tinea_corporis",
+      "name": {
+        "en": "Ringworm (Tinea Corporis)",
+        "ar": "السعفة الجسدية"
+      },
+      "category": "infectious",
+      "subcategory": "fungal",
+      "severity_range": [
+        "mild",
+        "moderate",
+        "severe"
+      ],
+      "urgency": "routine",
+      "description": {
+        "en": "A common fungal infection causing ring-shaped rashes",
+        "ar": "عدوى فطرية شائعة تسبب طفح جلدي على شكل حلقة"
+      }
+    },
+    {
+      "id": "psoriasis_plaque",
+      "name": {
+        "en": "Plaque Psoriasis",
+        "ar": "الصدفية اللويحية"
+      },
+      "category": "inflammatory",
+      "subcategory": "psoriasis",
+      "severity_range": [
+        "mild",
+        "moderate",
+        "severe"
+      ],
+      "urgency": "routine",
+      "description": {
+        "en": "Chronic autoimmune condition causing raised, red, scaly patches",
+        "ar": "حالة مناعية ذاتية مزمنة تسبب بقع حمراء مرتفعة ومتقشرة"
+      }
+    },
+    {
+      "id": "atopic_dermatitis",
+      "name": {
+        "en": "Atopic Dermatitis (Eczema)",
+        "ar": "التهاب الجلد التأتبي"
+      },
+      "category": "inflammatory",
+      "subcategory": "eczema",
+      "severity_range": [
+        "mild",
+        "moderate",
+        "severe"
+      ],
+      "urgency": "routine",
+      "description": {
+        "en": "Chronic skin condition causing itchy, inflamed skin",
+        "ar": "حالة جلدية مزمنة تسبب حكة والتهاب الجلد"
+      }
+    },
+    {
+      "id": "melanoma",
+      "name": {
+        "en": "Melanoma",
+        "ar": "سرطان الجلد الميلانومي"
+      },
+      "category": "neoplastic",
+      "subcategory": "malignant",
+      "severity_range": [
+        "early",
+        "advanced"
+      ],
+      "urgency": "urgent",
+      "description": {
+        "en": "Serious form of skin cancer developing from melanocytes",
+        "ar": "نوع خطير من سرطان الجلد يتطور من الخلايا الصباغية"
+      }
+    },
+    {
+      "id": "acne_vulgaris",
+      "name": {
+        "en": "Acne Vulgaris",
+        "ar": "حب الشباب"
+      },
+      "category": "inflammatory",
+      "subcategory": "dermatitis",
+      "severity_range": [
+        "mild",
+        "moderate",
+        "severe",
+        "cystic"
+      ],
+      "urgency": "routine",
+      "description": {
+        "en": "Common skin condition causing pimples and inflammation",
+        "ar": "حالة جلدية شائعة تسبب البثور والالتهاب"
+      }
+    },
+    {
+      "id": "vitiligo",
+      "name": {
+        "en": "Vitiligo",
+        "ar": "البهاق"
+      },
+      "category": "autoimmune",
+      "subcategory": "vitiligo",
+      "severity_range": [
+        "localized",
+        "generalized",
+        "universal"
+      ],
+      "urgency": "routine",
+      "description": {
+        "en": "Condition causing loss of skin color in patches",
+        "ar": "حالة تسبب فقدان لون الجلد في بقع"
+      }
+    },
+    {
+      "id": "herpes_simplex",
+      "name": {
+        "en": "Herpes Simplex",
+        "ar": "الهربس البسيط"
+      },
+      "category": "infectious",
+      "subcategory": "viral",
+      "severity_range": [
+        "mild",
+        "moderate",
+        "recurrent"
+      ],
+      "urgency": "routine",
+      "description": {
+        "en": "Viral infection causing blisters on skin or mucous membranes",
+        "ar": "عدوى فيروسية تسبب بثور على الجلد أو الأغشية المخاطية"
+      }
+    },
+    {
+      "id": "basal_cell_carcinoma",
+      "name": {
+        "en": "Basal Cell Carcinoma",
+        "ar": "سرطان الخلايا القاعدية"
+      },
+      "category": "neoplastic",
+      "subcategory": "malignant",
+      "severity_range": [
+        "superficial",
+        "nodular",
+        "infiltrative"
+      ],
+      "urgency": "urgent",
+      "description": {
+        "en": "Most common form of skin cancer, usually slow-growing",
+        "ar": "أكثر أنواع سرطان الجلد شيوعًا، عادة ما يكون بطيء النمو"
+      }
+    },
+    {
+      "id": "contact_dermatitis",
+      "name": {
+        "en": "Contact Dermatitis",
+        "ar": "التهاب الجلد التماسي"
+      },
+      "category": "allergic",
+      "subcategory": "contact",
+      "severity_range": [
+        "mild",
+        "moderate",
+        "severe"
+      ],
+      "urgency": "routine",
+      "description": {
+        "en": "Skin reaction from contact with irritants or allergens",
+        "ar": "رد فعل جلدي من التلامس مع مهيجات أو مسببات الحساسية"
+      }
+    },
+    {
+      "id": "scabies",
+      "name": {
+        "en": "Scabies",
+        "ar": "الجرب"
+      },
+      "category": "infectious",
+      "subcategory": "parasitic",
+      "severity_range": [
+        "typical",
+        "crusted"
+      ],
+      "urgency": "routine",
+      "description": {
+        "en": "Itchy skin condition caused by tiny mites",
+        "ar": "حالة جلدية مسببة للحكة بسبب عث صغير"
+      }
+    }
+  ]
+}

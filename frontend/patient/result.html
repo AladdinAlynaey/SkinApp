@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnosis Result - SkinDiagnosis</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <a href="/" class="sidebar-logo">
+                <span class="logo-icon">🔬</span>
+                <span class="logo-text">SkinDiagnosis</span>
+            </a>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span class="nav-icon">🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="new-diagnosis.html" class="nav-item">
+                    <span class="nav-icon">📷</span>
+                    <span>New Diagnosis</span>
+                </a>
+                <a href="history.html" class="nav-item">
+                    <span class="nav-icon">📋</span>
+                    <span>History</span>
+                </a>
+                <a href="wallet.html" class="nav-item">
+                    <span class="nav-icon">💳</span>
+                    <span>Wallet</span>
+                </a>
+                <a href="assistant.html" class="nav-item">
+                    <span class="nav-icon">🤖</span>
+                    <span>AI Assistant</span>
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <span class="nav-icon">👤</span>
+                    <span>Profile</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" class="nav-item" id="logout-btn">
+                    <span class="nav-icon">🚪</span>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="page-header">
+                <div>
+                    <a href="history.html" style="font-size: var(--font-size-sm); color: var(--text-secondary);">← Back
+                        to History</a>
+                    <h1 class="page-title" style="margin-top: var(--space-2);">Diagnosis Result</h1>
+                </div>
+                <span class="badge" id="result-status">Loading...</span>
+            </header>
+
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-6);">
+                <!-- Left: Image -->
+                <div class="card">
+                    <h3 style="margin-bottom: var(--space-4);">Uploaded Image</h3>
+                    <img id="result-image" src="" alt="Skin image"
+                        style="width: 100%; border-radius: var(--radius-lg);">
+                    <p style="font-size: var(--font-size-sm); color: var(--text-tertiary); margin-top: var(--space-2);"
+                        id="result-date"></p>
+                </div>
+
+                <!-- Right: Results -->
+                <div>
+                    <!-- Main Diagnosis -->
+                    <div class="card" style="margin-bottom: var(--space-6);">
+                        <h3 style="margin-bottom: var(--space-4);">Diagnosis</h3>
+                        <div
+                            style="background: linear-gradient(135deg, var(--primary-50), var(--primary-100)); padding: var(--space-5); border-radius: var(--radius-lg); margin-bottom: var(--space-4);">
+                            <h2 id="disease-name" style="color: var(--primary-700); margin: 0;">Loading...</h2>
+                            <p id="disease-category" style="color: var(--primary-600); margin: var(--space-1) 0 0 0;">
+                            </p>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4);">
+                            <div
+                                style="text-align: center; padding: var(--space-4); background: var(--bg-secondary); border-radius: var(--radius-md);">
+                                <div style="font-size: var(--font-size-2xl); font-weight: 700; color: var(--primary-600);"
+                                    id="confidence">-</div>
+                                <div style="font-size: var(--font-size-sm); color: var(--text-tertiary);">Confidence
+                                </div>
+                            </div>
+                            <div
+                                style="text-align: center; padding: var(--space-4); background: var(--bg-secondary); border-radius: var(--radius-md);">
+                                <div style="font-size: var(--font-size-2xl); font-weight: 700;" id="severity">-</div>
+                                <div style="font-size: var(--font-size-sm); color: var(--text-tertiary);">Severity</div>
+                            </div>
+                            <div
+                                style="text-align: center; padding: var(--space-4); background: var(--bg-secondary); border-radius: var(--radius-md);">
+                                <div style="font-size: var(--font-size-2xl); font-weight: 700;" id="urgency">-</div>
+                                <div style="font-size: var(--font-size-sm); color: var(--text-tertiary);">Urgency</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Explanation -->
+                    <div class="card" style="margin-bottom: var(--space-6);">
+                        <h3 style="margin-bottom: var(--space-4);">About This Condition</h3>
+                        <p id="explanation" style="color: var(--text-secondary);">Loading...</p>
+                    </div>
+
+                    <!-- Recommendations -->
+                    <div class="card" style="margin-bottom: var(--space-6);">
+                        <h3 style="margin-bottom: var(--space-4);">Recommendations</h3>
+                        <div id="recommendations"></div>
+                    </div>
+
+                    <!-- Doctor Review (if applicable) -->
+                    <div class="card" id="doctor-review-card" style="display: none;">
+                        <h3 style="margin-bottom: var(--space-4);">👨‍⚕️ Doctor Review</h3>
+                        <div id="doctor-review"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Disclaimer -->
+            <div
+                style="margin-top: var(--space-8); padding: var(--space-4); background: var(--warning-light); border-radius: var(--radius-lg); text-align: center;">
+                <p style="color: var(--warning-dark); margin: 0; font-size: var(--font-size-sm);">
+                    ⚠️ This is an AI-generated diagnosis for informational purposes only. Please consult a healthcare
+                    professional for medical advice.
+                </p>
+            </div>
+        </main>
+
+        <button class="sidebar-toggle">☰</button>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        if (!Auth.requireAuth(['patient'])) throw new Error('Unauthorized');
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const diagnosisId = urlParams.get('id');
+
+        if (!diagnosisId) {
+            window.location.href = 'history.html';
+        }
+
+        async function loadResult() {
+            const result = await API.get(`/diagnosis/${diagnosisId}`);
+
+            if (!result.success) {
+                Toast.error('Diagnosis not found');
+                return;
+            }
+
+            const d = result.data.diagnosis;
+            const pipeline = d.pipeline || {};
+            const stage4 = pipeline.stage4 || {};
+
+            // Image
+            document.getElementById('result-image').src = `${Config.API_BASE_URL}/diagnosis/${diagnosisId}/image`;
+            document.getElementById('result-date').textContent = new Date(d.created_at).toLocaleString();
+
+            // Status
+            const statusEl = document.getElementById('result-status');
+            statusEl.textContent = d.status === 'completed' ? 'Completed' : d.status === 'doctor_review' ? 'Under Doctor Review' : 'Processing';
+            statusEl.className = `badge badge-${d.status === 'completed' ? 'success' : 'warning'}`;
+
+            // Main diagnosis
+            document.getElementById('disease-name').textContent = pipeline.stage3?.disease_name?.en || 'Analysis Complete';
+            document.getElementById('disease-category').textContent = pipeline.stage2?.category || '';
+
+            // Metrics
+            document.getElementById('confidence').textContent = stage4.final_confidence
+                ? `${(stage4.final_confidence * 100).toFixed(0)}%`
+                : '-';
+            document.getElementById('severity').textContent = stage4.severity || '-';
+            document.getElementById('urgency').textContent = stage4.urgency || '-';
+
+            // Explanation
+            document.getElementById('explanation').textContent = stage4.patient_friendly_explanation?.en ||
+                'Detailed analysis is being prepared.';
+
+            // Recommendations
+            const recs = stage4.recommendations || [];
+            document.getElementById('recommendations').innerHTML = recs.length > 0
+                ? `<ul style="margin: 0; padding-left: var(--space-5);">${recs.map(r => `<li style="margin-bottom: var(--space-2);">${r}</li>`).join('')}</ul>`
+                : '<p style="color: var(--text-tertiary);">No specific recommendations at this time.</p>';
+
+            // Doctor review
+            if (d.doctor_review) {
+                document.getElementById('doctor-review-card').style.display = 'block';
+                const review = d.doctor_review;
+                document.getElementById('doctor-review').innerHTML = `
+                    <p><strong>Reviewed by:</strong> Dr. ${review.doctor_name || 'Specialist'}</p>
+                    ${review.agrees_with_ai !== undefined ? `
+                        <p><strong>Agrees with AI:</strong> ${review.agrees_with_ai ? 'Yes' : 'No'}</p>
+                    ` : ''}
+                    ${review.modifications ? `<p><strong>Modified Diagnosis:</strong> ${review.modifications}</p>` : ''}
+                    ${review.notes ? `<p><strong>Doctor Notes:</strong> ${review.notes}</p>` : ''}
+                    ${review.prescription ? `
+                        <div style="margin-top: var(--space-4); padding: var(--space-4); background: var(--bg-secondary); border-radius: var(--radius-md);">
+                            <strong>Prescription:</strong>
+                            <p style="margin: var(--space-2) 0 0 0;">${review.prescription}</p>
+                        </div>
+                    ` : ''}
+                `;
+            }
+        }
+
+        loadResult();
+
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            Auth.logout();
+        });
+    </script>
+</body>
+
+</html>

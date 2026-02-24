@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard - SkinDiagnosis</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a href="/" class="sidebar-logo">
+                <span class="logo-icon">🔬</span>
+                <span class="logo-text">SkinDiagnosis</span>
+            </a>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <span class="nav-icon">🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="cases.html" class="nav-item">
+                    <span class="nav-icon">📋</span>
+                    <span>My Cases</span>
+                </a>
+                <a href="earnings.html" class="nav-item">
+                    <span class="nav-icon">💰</span>
+                    <span>Earnings</span>
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <span class="nav-icon">👤</span>
+                    <span>Profile</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" class="nav-item" id="logout-btn">
+                    <span class="nav-icon">🚪</span>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="page-header">
+                <h1 class="page-title">Doctor Dashboard</h1>
+                <div id="doctor-name" class="badge badge-primary"></div>
+            </header>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">Pending Cases</span>
+                        <div class="stat-card-icon" style="background: var(--warning-light);">⏳</div>
+                    </div>
+                    <div class="stat-card-value" id="stat-pending">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">Cases Reviewed</span>
+                        <div class="stat-card-icon">✅</div>
+                    </div>
+                    <div class="stat-card-value" id="stat-reviewed">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">Total Earnings</span>
+                        <div class="stat-card-icon" style="background: var(--success-light);">💰</div>
+                    </div>
+                    <div class="stat-card-value" id="stat-earnings">$0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">Avg. Rating</span>
+                        <div class="stat-card-icon" style="background: var(--primary-100);">⭐</div>
+                    </div>
+                    <div class="stat-card-value" id="stat-rating">-</div>
+                </div>
+            </div>
+
+            <!-- Pending Cases -->
+            <div class="card" style="margin-top: var(--space-8);">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 class="card-title">Pending Cases</h3>
+                    <a href="cases.html" style="font-size: var(--font-size-sm);">View All →</a>
+                </div>
+                <div id="pending-cases">
+                    <p style="text-align: center; color: var(--text-tertiary); padding: var(--space-8);">
+                        No pending cases. Check back later!
+                    </p>
+                </div>
+            </div>
+        </main>
+
+        <button class="sidebar-toggle">☰</button>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        if (!Auth.requireAuth(['doctor'])) throw new Error('Unauthorized');
+
+        async function loadDashboard() {
+            // Get doctor profile
+            const profileResult = await API.get('/doctors/profile');
+            if (profileResult.success) {
+                const name = `Dr. ${profileResult.data.profile?.profile?.first_name || ''} ${profileResult.data.profile?.profile?.last_name || ''}`;
+                document.getElementById('doctor-name').textContent = name.trim() || 'Doctor';
+            }
+
+            // Get statistics
+            const statsResult = await API.get('/doctors/statistics');
+            if (statsResult.success) {
+                const stats = statsResult.data.statistics;
+                document.getElementById('stat-pending').textContent = stats.pending_cases || 0;
+                document.getElementById('stat-reviewed').textContent = stats.cases_reviewed || 0;
+                document.getElementById('stat-earnings').textContent = `$${stats.total_earnings || 0}`;
+                document.getElementById('stat-rating').textContent = stats.average_rating ? stats.average_rating.toFixed(1) : '-';
+            }
+
+            // Get pending cases
+            const casesResult = await API.get('/doctors/cases?pending=true');
+            if (casesResult.success && casesResult.data.cases?.length > 0) {
+                const container = document.getElementById('pending-cases');
+                container.innerHTML = casesResult.data.cases.slice(0, 5).map(c => `
+                    <div style="padding: var(--space-4); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Case #${c.id?.slice(0, 8)}</strong>
+                            <p style="font-size: var(--font-size-sm); color: var(--text-tertiary); margin: 0;">
+                                AI Diagnosis: ${c.pipeline?.stage3?.disease_name?.en || 'Pending'}
+                            </p>
+                        </div>
+                        <a href="review.html?id=${c.id}" class="btn btn-primary btn-sm">Review</a>
+                    </div>
+                `).join('');
+            }
+        }
+
+        loadDashboard();
+
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            Auth.logout();
+        });
+    </script>
+</body>
+
+</html>

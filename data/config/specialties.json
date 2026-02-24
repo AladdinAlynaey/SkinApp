@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "last_updated": "2026-02-08T07:54:04.088917",
+  "specialties": [
+    {
+      "id": "general_dermatology",
+      "name": {
+        "en": "General Dermatology",
+        "ar": "طب الجلدية العام"
+      },
+      "handles_categories": [
+        "infectious",
+        "inflammatory",
+        "allergic",
+        "pigmentary"
+      ],
+      "description": {
+        "en": "General skin conditions and diseases",
+        "ar": "الحالات والأمراض الجلدية العامة"
+      }
+    },
+    {
+      "id": "pediatric_dermatology",
+      "name": {
+        "en": "Pediatric Dermatology",
+        "ar": "طب جلدية الأطفال"
+      },
+      "handles_categories": [
+        "infectious",
+        "inflammatory",
+        "genetic"
+      ],
+      "age_range": {
+        "min": 0,
+        "max": 18
+      },
+      "description": {
+        "en": "Skin conditions in children",
+        "ar": "الحالات الجلدية لدى الأطفال"
+      }
+    },
+    {
+      "id": "dermatologic_oncology",
+      "name": {
+        "en": "Dermatologic Oncology",
+        "ar": "أورام الجلد"
+      },
+      "handles_categories": [
+        "neoplastic"
+      ],
+      "priority": "high",
+      "description": {
+        "en": "Skin cancers and tumors",
+        "ar": "سرطانات وأورام الجلد"
+      }
+    },
+    {
+      "id": "cosmetic_dermatology",
+      "name": {
+        "en": "Cosmetic Dermatology",
+        "ar": "طب الجلد التجميلي"
+      },
+      "handles_categories": [
+        "pigmentary"
+      ],
+      "description": {
+        "en": "Cosmetic skin treatments",
+        "ar": "علاجات الجلد التجميلية"
+      }
+    },
+    {
+      "id": "immunodermatology",
+      "name": {
+        "en": "Immunodermatology",
+        "ar": "مناعة الجلد"
+      },
+      "handles_categories": [
+        "autoimmune",
+        "allergic"
+      ],
+      "description": {
+        "en": "Immune-related skin conditions",
+        "ar": "الحالات الجلدية المتعلقة بالمناعة"
+      }
+    }
+  ]
+}

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet - SkinDiagnosis</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a href="/" class="sidebar-logo">
+                <span class="logo-icon">🔬</span>
+                <span class="logo-text">SkinDiagnosis</span>
+            </a>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span class="nav-icon">🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="new-diagnosis.html" class="nav-item">
+                    <span class="nav-icon">📷</span>
+                    <span>New Diagnosis</span>
+                </a>
+                <a href="history.html" class="nav-item">
+                    <span class="nav-icon">📋</span>
+                    <span>History</span>
+                </a>
+                <a href="wallet.html" class="nav-item active">
+                    <span class="nav-icon">💳</span>
+                    <span>Wallet</span>
+                </a>
+                <a href="assistant.html" class="nav-item">
+                    <span class="nav-icon">🤖</span>
+                    <span>AI Assistant</span>
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <span class="nav-icon">👤</span>
+                    <span>Profile</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" class="nav-item" id="logout-btn">
+                    <span class="nav-icon">🚪</span>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="page-header">
+                <h1 class="page-title">Wallet</h1>
+            </header>
+
+            <!-- Balance Card -->
+            <div class="card"
+                style="background: linear-gradient(135deg, var(--primary-600), var(--primary-800)); color: white; margin-bottom: var(--space-8);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <p style="opacity: 0.8; margin-bottom: var(--space-2);">Available Balance</p>
+                        <h2 style="font-size: var(--font-size-4xl); color: white;" id="balance">$0.00</h2>
+                    </div>
+                    <div style="font-size: 4rem; opacity: 0.3;">💳</div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-6); margin-bottom: var(--space-8);">
+                <!-- Add Funds -->
+                <div class="card">
+                    <h3 style="margin-bottom: var(--space-4);">Add Funds</h3>
+                    <div class="form-group">
+                        <label class="form-label">Amount ($)</label>
+                        <input type="number" id="deposit-amount" class="form-input" min="10" max="1000" value="50"
+                            step="10">
+                    </div>
+                    <div style="display: flex; gap: var(--space-2); flex-wrap: wrap; margin-bottom: var(--space-4);">
+                        <button class="btn btn-outline btn-sm quick-amount" data-amount="25">$25</button>
+                        <button class="btn btn-outline btn-sm quick-amount" data-amount="50">$50</button>
+                        <button class="btn btn-outline btn-sm quick-amount" data-amount="100">$100</button>
+                        <button class="btn btn-outline btn-sm quick-amount" data-amount="200">$200</button>
+                    </div>
+                    <button class="btn btn-primary" id="deposit-btn" style="width: 100%;">
+                        Add Funds
+                    </button>
+                </div>
+
+                <!-- Pricing Info -->
+                <div class="card">
+                    <h3 style="margin-bottom: var(--space-4);">Pricing</h3>
+                    <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                        <div
+                            style="display: flex; justify-content: space-between; padding: var(--space-3); background: var(--bg-secondary); border-radius: var(--radius-md);">
+                            <span>AI Diagnosis Only</span>
+                            <strong>$5.00</strong>
+                        </div>
+                        <div
+                            style="display: flex; justify-content: space-between; padding: var(--space-3); background: var(--bg-secondary); border-radius: var(--radius-md);">
+                            <span>AI + Doctor Review</span>
+                            <strong>$15.00</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transaction History -->
+            <div class="card">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 class="card-title">Transaction History</h3>
+                </div>
+                <div id="transactions">
+                    <p style="text-align: center; color: var(--text-tertiary); padding: var(--space-8);">
+                        No transactions yet.
+                    </p>
+                </div>
+            </div>
+        </main>
+
+        <button class="sidebar-toggle">☰</button>
+    </div>
+
+    <!-- Deposit Modal -->
+    <div class="modal-overlay" id="deposit-modal">
+        <div class="modal">
+            <h3 style="margin-bottom: var(--space-4);">Confirm Deposit</h3>
+            <p>You are adding <strong id="confirm-amount">$50</strong> to your wallet.</p>
+            <p style="font-size: var(--font-size-sm); color: var(--text-tertiary);">
+                In production, this will redirect to a payment gateway.
+            </p>
+            <div style="display: flex; gap: var(--space-4); margin-top: var(--space-6);">
+                <button class="btn btn-outline" id="cancel-deposit" style="flex: 1;">Cancel</button>
+                <button class="btn btn-primary" id="confirm-deposit" style="flex: 1;">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        if (!Auth.requireAuth(['patient'])) throw new Error('Unauthorized');
+
+        // Load wallet data
+        async function loadWallet() {
+            const result = await API.get('/wallet/balance');
+            if (result.success) {
+                document.getElementById('balance').textContent = `$${result.data.balance?.toFixed(2) || '0.00'}`;
+            }
+
+            const txResult = await API.get('/wallet/transactions');
+            if (txResult.success && txResult.data.transactions?.length > 0) {
+                const container = document.getElementById('transactions');
+                container.innerHTML = txResult.data.transactions.map(tx => `
+                    <div style="padding: var(--space-4); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>${tx.description}</strong>
+                            <p style="font-size: var(--font-size-sm); color: var(--text-tertiary); margin: 0;">
+                                ${new Date(tx.created_at).toLocaleString()}
+                            </p>
+                        </div>
+                        <span style="font-weight: 600; color: ${tx.type === 'credit' ? 'var(--success)' : 'var(--error)'};">
+                            ${tx.type === 'credit' ? '+' : '-'}$${tx.amount.toFixed(2)}
+                        </span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        loadWallet();
+
+        // Quick amount buttons
+        document.querySelectorAll('.quick-amount').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.getElementById('deposit-amount').value = btn.dataset.amount;
+            });
+        });
+
+        // Deposit flow
+        document.getElementById('deposit-btn').addEventListener('click', () => {
+            const amount = document.getElementById('deposit-amount').value;
+            document.getElementById('confirm-amount').textContent = `$${amount}`;
+            document.getElementById('deposit-modal').classList.add('active');
+        });
+
+        document.getElementById('cancel-deposit').addEventListener('click', () => {
+            document.getElementById('deposit-modal').classList.remove('active');
+        });
+
+        document.getElementById('confirm-deposit').addEventListener('click', async () => {
+            const amount = parseFloat(document.getElementById('deposit-amount').value);
+            document.getElementById('deposit-modal').classList.remove('active');
+
+            const result = await API.post('/wallet/deposit', { amount });
+            if (result.success) {
+                Toast.success('Deposit successful!');
+                loadWallet();
+            } else {
+                Toast.error(result.error || 'Deposit failed');
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            Auth.logout();
+        });
+    </script>
+</body>
+
+</html>

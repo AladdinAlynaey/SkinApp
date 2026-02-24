@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+    <meta name="description" content="AI-powered skin disease diagnosis with doctor verification">
+    <meta name="theme-color" content="#0a0f1a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>SkinDiagnosis - AI Skin Analysis</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Config first - prevents FOUC -->
+    <script src="js/config.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/layout.css">
+
+    <style>
+        /* Hero Banner Slider */
+        .hero-slider {
+            position: relative;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            margin-bottom: var(--space-6);
+            /* Force LTR so RTL doesn't flip the slider */
+            direction: ltr;
+        }
+
+        .hero-slides {
+            display: flex;
+            transition: transform 0.5s ease-out;
+            direction: ltr;
+        }
+
+        .hero-slide {
+            min-width: 100%;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .hero-slide img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        @media (min-width: 768px) {
+            .hero-slide img {
+                height: 320px;
+            }
+        }
+
+        .hero-slide-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(10, 15, 26, 0.95) 0%, rgba(10, 15, 26, 0.4) 60%, transparent 100%);
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: var(--space-5);
+        }
+
+        /* RTL overlay - gradient from right, content on right */
+        [dir="rtl"] .hero-slide-overlay {
+            background: linear-gradient(270deg, rgba(10, 15, 26, 0.95) 0%, rgba(10, 15, 26, 0.4) 60%, transparent 100%);
+            justify-content: flex-end;
+        }
+
+        .hero-slide-content {
+            /* Default LTR for English */
+            direction: ltr;
+            max-width: 50%;
+        }
+
+        /* RTL content styling for Arabic */
+        [dir="rtl"] .hero-slide-content {
+            direction: rtl !important;
+            text-align: right;
+        }
+
+        [dir="rtl"] .hero-slide-content h1,
+        [dir="rtl"] .hero-slide-content p {
+            direction: rtl;
+            text-align: right;
+        }
+
+        [dir="rtl"] .stats-inline {
+            direction: rtl;
+            justify-content: flex-end;
+        }
+
+        [dir="rtl"] .stats-inline .stat {
+            text-align: right;
+        }
+
+        .hero-slide-content h1 {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            margin-bottom: var(--space-2);
+            color: white;
+            line-height: 1.2;
+            font-weight: 700;
+        }
+
+        .hero-slide-content p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--space-4);
+            max-width: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .hero-slide-content p {
+                font-size: var(--font-size-base);
+            }
+        }
+
+        .hero-dots {
+            position: absolute;
+            bottom: var(--space-4);
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: var(--space-2);
+        }
+
+        .hero-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            padding: 0;
+        }
+
+        .hero-dot.active {
+            background: white;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        .stats-inline {
+            display: flex;
+            gap: var(--space-6);
+            margin-top: var(--space-4);
+        }
+
+        .stats-inline .stat-value {
+            font-size: var(--font-size-xl);
+            font-weight: 700;
+            color: var(--primary-400);
+        }
+
+        .stats-inline .stat-label {
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+        }
+
+        /* Adjust footer for mobile bottom nav */
+        @media (max-width: 1023px) {
+            .footer {
+                padding-bottom: calc(90px + var(--safe-bottom));
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="/" class="nav-logo">
+                    <span class="logo-icon">🔬</span>
+                    <span class="logo-text">SkinDiagnosis</span>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <div class="nav-links">
+                    <a href="#how-it-works" class="nav-link" data-i18n="howItWorks">How It Works</a>
+                    <a href="#features" class="nav-link" data-i18n="featuresTitle">Features</a>
+                    <a href="#" class="nav-link" data-i18n="doctors">Doctors</a>
+                    <a href="#" class="nav-link" data-i18n="contact">Contact</a>
+                </div>
+
+                <div class="nav-actions">
+                    <button class="btn-icon" id="theme-toggle" aria-label="Toggle theme">
+                        <span class="icon-sun">☀️</span>
+                        <span class="icon-moon">🌙</span>
+                    </button>
+                    <button class="btn-icon" id="lang-toggle" aria-label="Toggle language">
+                        <span style="font-size: 0.75rem; font-weight: 600;">عربي</span>
+                    </button>
+                    <a href="login.html" class="btn btn-outline" data-i18n="login">Login</a>
+                    <a href="register.html" class="btn btn-primary" data-i18n="getStarted">Get Started</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Slider Section -->
+        <section class="section" style="padding-top: calc(var(--header-height) + var(--safe-top) + var(--space-4));">
+            <div class="container">
+                <div class="hero-slider">
+                    <div class="hero-slides" id="hero-slides">
+                        <!-- Slide 1 -->
+                        <div class="hero-slide">
+                            <img src="images/hero-banner.png" alt="AI Skin Diagnosis">
+                            <div class="hero-slide-overlay">
+                                <div class="hero-slide-content">
+                                    <h1 data-i18n="slide1Title">AI-Powered Skin<br>Disease Diagnosis</h1>
+                                    <p data-i18n="slide1Desc">Get accurate skin analysis in minutes using advanced AI
+                                        technology.</p>
+                                    <div class="stats-inline">
+                                        <div class="stat">
+                                            <span class="stat-value">98%</span>
+                                            <span class="stat-label" data-i18n="accuracy">Accuracy</span>
+                                        </div>
+                                        <div class="stat">
+                                            <span class="stat-value">50K+</span>
+                                            <span class="stat-label" data-i18n="diagnoses">Diagnoses</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Slide 2 -->
+                        <div class="hero-slide">
+                            <img src="images/banner-slide-2.png" alt="Expert Doctors">
+                            <div class="hero-slide-overlay">
+                                <div class="hero-slide-content">
+                                    <h1 data-i18n="slide2Title">Verified by<br>Expert Doctors</h1>
+                                    <p data-i18n="slide2Desc">Optional verification from certified dermatologists for
+                                        peace of mind.</p>
+                                    <div class="stats-inline">
+                                        <div class="stat">
+                                            <span class="stat-value">200+</span>
+                                            <span class="stat-label" data-i18n="doctors">Doctors</span>
+                                        </div>
+                                        <div class="stat">
+                                            <span class="stat-value">24/7</span>
+                                            <span class="stat-label" data-i18n="available">Available</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Slide 3 -->
+                        <div class="hero-slide">
+                            <img src="images/banner-slide-3.png" alt="Fast Results">
+                            <div class="hero-slide-overlay">
+                                <div class="hero-slide-content">
+                                    <h1 data-i18n="slide3Title">Results in<br>Under 2 Minutes</h1>
+                                    <p data-i18n="slide3Desc">Upload a photo and get your diagnosis with treatment
+                                        recommendations.</p>
+                                    <div class="stats-inline">
+                                        <div class="stat">
+                                            <span class="stat-value">2min</span>
+                                            <span class="stat-label" data-i18n="results">Results</span>
+                                        </div>
+                                        <div class="stat">
+                                            <span class="stat-value">100+</span>
+                                            <span class="stat-label" data-i18n="conditions">Conditions</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-dots" id="hero-dots">
+                        <button class="hero-dot active" data-slide="0"></button>
+                        <button class="hero-dot" data-slide="1"></button>
+                        <button class="hero-dot" data-slide="2"></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section id="how-it-works" class="section">
+            <div class="container">
+                <h2 class="section-title" data-i18n="howItWorksTitle">How It Works</h2>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-icon-img">
+                            <img src="images/step-1-upload.png" alt="Step 1 - Upload Photo">
+                        </div>
+                        <h3 data-i18n="step1Title">Upload Photo</h3>
+                        <p data-i18n="step1Desc">Take a clear photo of the affected area.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-icon-img">
+                            <img src="images/step-2-ai.png" alt="Step 2 - AI Analysis">
+                        </div>
+                        <h3 data-i18n="step2Title">AI Analysis</h3>
+                        <p data-i18n="step2Desc">Our AI analyzes your image instantly.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-icon-img">
+                            <img src="images/step-3-doctor.png" alt="Step 3 - Doctor Review">
+                        </div>
+                        <h3 data-i18n="step3Title">Doctor Review</h3>
+                        <p data-i18n="step3Desc">Optional expert verification.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-icon-img">
+                            <img src="images/step-4-treatment.png" alt="Step 4 - Get Treatment">
+                        </div>
+                        <h3 data-i18n="step4Title">Get Treatment</h3>
+                        <p data-i18n="step4Desc">Receive recommendations.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section id="features" class="section section-alt">
+            <div class="container">
+                <h2 class="section-title" data-i18n="featuresTitle">Why Choose Us</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h3 data-i18n="feature1Title">High Accuracy</h3>
+                        <p data-i18n="feature1Desc">98% AI accuracy rate.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3 data-i18n="feature2Title">Fast Results</h3>
+                        <p data-i18n="feature2Desc">Results in 2 minutes.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3 data-i18n="feature3Title">Secure</h3>
+                        <p data-i18n="feature3Desc">Data encrypted & protected.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🌍</div>
+                        <h3 data-i18n="feature4Title">Multilingual</h3>
+                        <p data-i18n="feature4Desc">English & Arabic support.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="section cta-section">
+            <div class="container">
+                <div class="cta-content">
+                    <h2 data-i18n="ctaTitle">Ready to Get Started?</h2>
+                    <p data-i18n="ctaDesc">Join thousands getting accurate diagnoses.</p>
+                    <a href="register.html" class="btn btn-lg"
+                        style="background: white; color: #0891b2; font-weight: 600;" data-i18n="createAccount">
+                        Create Free Account
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-brand">
+                        <div class="nav-logo" style="font-size: var(--font-size-base);">
+                            <span class="logo-icon">🔬</span>
+                            <span class="logo-text">SkinDiagnosis</span>
+                        </div>
+                        <p data-i18n="footerDesc">AI-powered skin disease diagnosis</p>
+                    </div>
+                    <div class="footer-links">
+                        <a href="#" data-i18n="privacy">Privacy</a>
+                        <a href="#" data-i18n="terms">Terms</a>
+                        <a href="#" data-i18n="contact">Contact</a>
+                    </div>
+                </div>
+                <div class="footer-disclaimer">
+                    <p data-i18n="disclaimer">
+                        ⚠️ This service is for informational purposes only and does not replace professional medical
+                        advice.
+                    </p>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2024 SkinDiagnosis. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Mobile Bottom Navigation - With Theme & Language Toggle -->
+        <nav class="bottom-nav">
+            <!-- Home -->
+            <a href="/" class="bottom-nav-item active">
+                <span class="bottom-nav-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                        <polyline points="9 22 9 12 15 12 15 22" />
+                    </svg>
+                </span>
+                <span>Home</span>
+            </a>
+
+            <!-- Language Toggle -->
+            <button class="bottom-nav-item" id="lang-toggle-bottom" aria-label="Toggle Language">
+                <span class="bottom-nav-icon">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="2" y1="12" x2="22" y2="12" />
+                        <path
+                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                    </svg>
+                </span>
+                <span id="lang-label-bottom">عربي</span>
+            </button>
+
+            <!-- Big Center Button - Get Started -->
+            <div class="bottom-nav-center">
+                <a href="register.html" class="bottom-nav-center-btn" aria-label="Get Started">
+                    <svg viewBox="0 0 24 24">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                </a>
+            </div>
+
+            <!-- Theme Toggle -->
+            <button class="bottom-nav-item" id="theme-toggle-bottom" aria-label="Toggle Theme">
+                <span class="bottom-nav-icon">
+                    <svg viewBox="0 0 24 24" id="theme-icon-sun">
+                        <circle cx="12" cy="12" r="5" />
+                        <line x1="12" y1="1" x2="12" y2="3" />
+                        <line x1="12" y1="21" x2="12" y2="23" />
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                        <line x1="1" y1="12" x2="3" y2="12" />
+                        <line x1="21" y1="12" x2="23" y2="12" />
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                    </svg>
+                    <svg viewBox="0 0 24 24" id="theme-icon-moon" style="display:none;">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                </span>
+                <span id="theme-label-bottom">Light</span>
+            </button>
+
+            <!-- Login -->
+            <a href="login.html" class="bottom-nav-item">
+                <span class="bottom-nav-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                        <polyline points="10 17 15 12 10 7" />
+                        <line x1="15" y1="12" x2="3" y2="12" />
+                    </svg>
+                </span>
+                <span data-i18n="login">Login</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/i18n.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Hero Slider
+        let currentSlide = 0;
+        const slides = document.getElementById('hero-slides');
+        const dots = document.querySelectorAll('.hero-dot');
+        const totalSlides = 3;
+
+        function goToSlide(index) {
+            currentSlide = index;
+            // Always use negative direction since slider container is forced LTR
+            slides.style.transform = `translateX(-${index * 100}%)`;
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+
+        // Auto-advance slider every 5 seconds
+        setInterval(() => {
+            goToSlide((currentSlide + 1) % totalSlides);
+        }, 5000);
+
+        // Dot click handlers
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                goToSlide(parseInt(dot.dataset.slide));
+            });
+        });
+
+        // Touch swipe support
+        let touchStartX = 0;
+        const sliderEl = document.querySelector('.hero-slider');
+        sliderEl.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        });
+        sliderEl.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0 && currentSlide < totalSlides - 1) {
+                    goToSlide(currentSlide + 1);
+                } else if (diff < 0 && currentSlide > 0) {
+                    goToSlide(currentSlide - 1);
+                }
+            }
+        });
+
+        // Bottom nav theme toggle
+        const themeToggleBottom = document.getElementById('theme-toggle-bottom');
+        if (themeToggleBottom) {
+            themeToggleBottom.addEventListener('click', () => {
+                Theme.toggle();
+                updateBottomNavIcons();
+            });
+        }
+
+        // Bottom nav language toggle
+        const langToggleBottom = document.getElementById('lang-toggle-bottom');
+        if (langToggleBottom) {
+            langToggleBottom.addEventListener('click', () => {
+                i18n.toggle();
+                updateBottomNavIcons();
+            });
+        }
+
+        // Update bottom nav icons based on current state
+        function updateBottomNavIcons() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const currentLang = document.documentElement.lang;
+
+            // Update theme icon
+            const sunIcon = document.getElementById('theme-icon-sun');
+            const moonIcon = document.getElementById('theme-icon-moon');
+            const themeLabel = document.getElementById('theme-label-bottom');
+            if (sunIcon && moonIcon && themeLabel) {
+                if (currentTheme === 'dark') {
+                    sunIcon.style.display = 'block';
+                    moonIcon.style.display = 'none';
+                    themeLabel.textContent = 'Light';
+                } else {
+                    sunIcon.style.display = 'none';
+                    moonIcon.style.display = 'block';
+                    themeLabel.textContent = 'Dark';
+                }
+            }
+
+            // Update language label
+            const langLabel = document.getElementById('lang-label-bottom');
+            if (langLabel) {
+                langLabel.textContent = currentLang === 'en' ? 'عربي' : 'EN';
+            }
+        }
+
+        // Initialize bottom nav icons
+        updateBottomNavIcons();
+    </script>
+</body>
+
+</html>

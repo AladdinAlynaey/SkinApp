@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant - SkinDiagnosis</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 180px);
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--space-4);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+        }
+
+        .message {
+            max-width: 80%;
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius-lg);
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background: var(--primary-600);
+            color: white;
+        }
+
+        .message.assistant {
+            align-self: flex-start;
+            background: var(--bg-secondary);
+        }
+
+        .chat-input-container {
+            display: flex;
+            gap: var(--space-3);
+            padding: var(--space-4);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: var(--space-3) var(--space-4);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            font-size: var(--font-size-base);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <a href="/" class="sidebar-logo">
+                <span class="logo-icon">🔬</span>
+                <span class="logo-text">SkinDiagnosis</span>
+            </a>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span class="nav-icon">🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="new-diagnosis.html" class="nav-item">
+                    <span class="nav-icon">📷</span>
+                    <span>New Diagnosis</span>
+                </a>
+                <a href="history.html" class="nav-item">
+                    <span class="nav-icon">📋</span>
+                    <span>History</span>
+                </a>
+                <a href="wallet.html" class="nav-item">
+                    <span class="nav-icon">💳</span>
+                    <span>Wallet</span>
+                </a>
+                <a href="assistant.html" class="nav-item active">
+                    <span class="nav-icon">🤖</span>
+                    <span>AI Assistant</span>
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <span class="nav-icon">👤</span>
+                    <span>Profile</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" class="nav-item" id="logout-btn">
+                    <span class="nav-icon">🚪</span>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content" style="padding: 0;">
+            <div class="card chat-container" style="margin: var(--space-6); height: calc(100vh - var(--space-12));">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 class="card-title">🤖 AI Assistant</h3>
+                    <button class="btn btn-ghost btn-sm" id="clear-chat">Clear Chat</button>
+                </div>
+
+                <div class="chat-messages" id="messages">
+                    <div class="message assistant">
+                        Hello! I'm your AI health assistant. I can help answer questions about skin conditions, explain
+                        your diagnoses, and provide general skincare guidance. How can I help you today?
+                    </div>
+                </div>
+
+                <div class="chat-input-container">
+                    <input type="text" id="chat-input" class="chat-input" placeholder="Type your message..."
+                        autocomplete="off">
+                    <button class="btn btn-primary" id="send-btn">Send</button>
+                </div>
+            </div>
+        </main>
+
+        <button class="sidebar-toggle">☰</button>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        if (!Auth.requireAuth(['patient'])) throw new Error('Unauthorized');
+
+        const messagesContainer = document.getElementById('messages');
+        const chatInput = document.getElementById('chat-input');
+        let isLoading = false;
+
+        function addMessage(content, role) {
+            const msg = document.createElement('div');
+            msg.className = `message ${role}`;
+            msg.textContent = content;
+            messagesContainer.appendChild(msg);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        async function sendMessage() {
+            if (isLoading) return;
+            const message = chatInput.value.trim();
+            if (!message) return;
+
+            chatInput.value = '';
+            addMessage(message, 'user');
+
+            isLoading = true;
+            const loadingMsg = document.createElement('div');
+            loadingMsg.className = 'message assistant';
+            loadingMsg.innerHTML = '<span class="spinner" style="width: 16px; height: 16px;"></span>';
+            messagesContainer.appendChild(loadingMsg);
+
+            const result = await API.post('/assistant/chat', { message });
+
+            messagesContainer.removeChild(loadingMsg);
+            isLoading = false;
+
+            if (result.success) {
+                addMessage(result.data.response, 'assistant');
+            } else {
+                addMessage('Sorry, I encountered an error. Please try again.', 'assistant');
+            }
+        }
+
+        document.getElementById('send-btn').addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        document.getElementById('clear-chat').addEventListener('click', async () => {
+            await API.post('/assistant/clear');
+            messagesContainer.innerHTML = `
+                <div class="message assistant">
+                    Chat cleared. How can I help you today?
+                </div>
+            `;
+        });
+
+        // Load history
+        async function loadHistory() {
+            const result = await API.get('/assistant/history?limit=20');
+            if (result.success && result.data.messages?.length > 0) {
+                messagesContainer.innerHTML = '';
+                result.data.messages.forEach(msg => {
+                    addMessage(msg.content, msg.role);
+                });
+            }
+        }
+        loadHistory();
+
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            Auth.logout();
+        });
+    </script>
+</body>
+
+</html>

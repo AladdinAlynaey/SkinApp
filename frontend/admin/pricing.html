@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing - Admin</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <a href="/" class="sidebar-logo">
+                <span class="logo-icon">🔬</span>
+                <span class="logo-text">Admin Panel</span>
+            </a>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span class="nav-icon">🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="doctors.html" class="nav-item">
+                    <span class="nav-icon">👨‍⚕️</span>
+                    <span>Doctors</span>
+                </a>
+                <a href="diseases.html" class="nav-item">
+                    <span class="nav-icon">🦠</span>
+                    <span>Diseases</span>
+                </a>
+                <a href="pricing.html" class="nav-item active">
+                    <span class="nav-icon">💵</span>
+                    <span>Pricing</span>
+                </a>
+                <a href="ai-routing.html" class="nav-item">
+                    <span class="nav-icon">🤖</span>
+                    <span>AI Routing</span>
+                </a>
+                <a href="logs.html" class="nav-item">
+                    <span class="nav-icon">📜</span>
+                    <span>Logs</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" class="nav-item" id="logout-btn">
+                    <span class="nav-icon">🚪</span>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="page-header">
+                <h1 class="page-title">Pricing Configuration</h1>
+            </header>
+
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: var(--space-6);">
+                <!-- Diagnosis Pricing -->
+                <div class="card">
+                    <h3 style="margin-bottom: var(--space-4);">Diagnosis Pricing</h3>
+                    <form id="diagnosis-pricing-form">
+                        <div class="form-group">
+                            <label class="form-label">AI Only Diagnosis ($)</label>
+                            <input type="number" id="price-ai-only" class="form-input" step="0.01" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">AI + Doctor Review ($)</label>
+                            <input type="number" id="price-ai-doctor" class="form-input" step="0.01" min="0">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            Save Pricing
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Revenue Split -->
+                <div class="card">
+                    <h3 style="margin-bottom: var(--space-4);">Revenue Split</h3>
+                    <form id="revenue-split-form">
+                        <div class="form-group">
+                            <label class="form-label">Platform Share (%)</label>
+                            <input type="number" id="platform-share" class="form-input" min="0" max="100">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Doctor Share (%)</label>
+                            <input type="number" id="doctor-share" class="form-input" min="0" max="100" readonly>
+                            <small style="color: var(--text-tertiary);">Automatically calculated</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            Save Split
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Wallet Settings -->
+                <div class="card">
+                    <h3 style="margin-bottom: var(--space-4);">Wallet Settings</h3>
+                    <form id="wallet-settings-form">
+                        <div class="form-group">
+                            <label class="form-label">Minimum Deposit ($)</label>
+                            <input type="number" id="min-deposit" class="form-input" step="1" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Maximum Deposit ($)</label>
+                            <input type="number" id="max-deposit" class="form-input" step="1" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Minimum Withdrawal ($)</label>
+                            <input type="number" id="min-withdrawal" class="form-input" step="1" min="1">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            Save Settings
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <button class="sidebar-toggle">☰</button>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        const user = Auth.getUser();
+        if (!user || user.user_type !== 'admin') {
+            window.location.href = '/login.html';
+            throw new Error('Unauthorized');
+        }
+
+        async function loadPricing() {
+            const result = await API.get('/admin/pricing');
+            if (result.success) {
+                const pricing = result.data.pricing;
+                document.getElementById('price-ai-only').value = pricing.ai_only || 5;
+                document.getElementById('price-ai-doctor').value = pricing.ai_doctor_review || 15;
+                document.getElementById('platform-share').value = pricing.platform_share || 30;
+                document.getElementById('doctor-share').value = 100 - (pricing.platform_share || 30);
+                document.getElementById('min-deposit').value = pricing.min_deposit || 10;
+                document.getElementById('max-deposit').value = pricing.max_deposit || 1000;
+                document.getElementById('min-withdrawal').value = pricing.min_withdrawal || 50;
+            }
+        }
+
+        loadPricing();
+
+        // Auto-calculate doctor share
+        document.getElementById('platform-share').addEventListener('input', (e) => {
+            document.getElementById('doctor-share').value = 100 - parseInt(e.target.value || 0);
+        });
+
+        // Save diagnosis pricing
+        document.getElementById('diagnosis-pricing-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                ai_only: parseFloat(document.getElementById('price-ai-only').value),
+                ai_doctor_review: parseFloat(document.getElementById('price-ai-doctor').value)
+            };
+            const result = await API.put('/admin/pricing', data);
+            if (result.success) {
+                Toast.success('Pricing updated');
+            } else {
+                Toast.error(result.error || 'Failed to update');
+            }
+        });
+
+        // Save revenue split
+        document.getElementById('revenue-split-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                platform_share: parseInt(document.getElementById('platform-share').value)
+            };
+            const result = await API.put('/admin/pricing', data);
+            if (result.success) {
+                Toast.success('Revenue split updated');
+            } else {
+                Toast.error(result.error || 'Failed to update');
+            }
+        });
+
+        // Save wallet settings
+        document.getElementById('wallet-settings-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                min_deposit: parseInt(document.getElementById('min-deposit').value),
+                max_deposit: parseInt(document.getElementById('max-deposit').value),
+                min_withdrawal: parseInt(document.getElementById('min-withdrawal').value)
+            };
+            const result = await API.put('/admin/pricing', data);
+            if (result.success) {
+                Toast.success('Wallet settings updated');
+            } else {
+                Toast.error(result.error || 'Failed to update');
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            Auth.logout();
+        });
+    </script>
+</body>
+
+</html>

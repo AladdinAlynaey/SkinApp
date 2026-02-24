@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+    <meta name="theme-color" content="#0a0f1a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Login - SkinDiagnosis</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Config first -->
+    <script src="js/config.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/layout.css">
+</head>
+
+<body>
+    <div class="auth-layout">
+        <div class="auth-card">
+            <div class="auth-header">
+                <a href="/" class="auth-logo">
+                    <span class="logo-icon">🔬</span>
+                    <span class="logo-text">SkinDiagnosis</span>
+                </a>
+                <h1 class="auth-title" data-i18n="loginTitle">Welcome Back</h1>
+                <p class="auth-subtitle" data-i18n="loginSubtitle">Sign in to continue</p>
+            </div>
+
+            <form id="login-form" class="auth-form">
+                <!-- Role Tabs -->
+                <div class="role-tabs">
+                    <button type="button" class="role-tab active" data-type="patient"
+                        data-i18n="patient">Patient</button>
+                    <button type="button" class="role-tab" data-type="doctor" data-i18n="doctor">Doctor</button>
+                </div>
+                <input type="hidden" name="user_type" id="user-type" value="patient">
+
+                <div class="form-group">
+                    <label class="form-label" for="email" data-i18n="email">Email</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="you@example.com"
+                        required autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password" data-i18n="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-input" placeholder="••••••••"
+                        required autocomplete="current-password">
+                </div>
+
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4);">
+                    <label class="form-check">
+                        <input type="checkbox" name="remember" class="form-checkbox">
+                        <span class="form-check-label" data-i18n="rememberMe">Remember me</span>
+                    </label>
+                    <a href="forgot-password.html" style="font-size: var(--font-size-sm);"
+                        data-i18n="forgotPassword">Forgot password?</a>
+                </div>
+
+                <div id="login-error" class="form-error" style="display: none;"></div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg" id="submit-btn">
+                    <span data-i18n="signIn">Sign In</span>
+                </button>
+            </form>
+
+            <p class="auth-footer">
+                <span data-i18n="noAccount">Don't have an account?</span>
+                <a href="register.html" data-i18n="signUp">Sign up</a>
+            </p>
+
+            <!-- Theme & Lang -->
+            <div style="display: flex; justify-content: center; gap: var(--space-2); margin-top: var(--space-4);">
+                <button class="btn-icon" id="theme-toggle" aria-label="Toggle theme">
+                    <span class="icon-sun">☀️</span>
+                    <span class="icon-moon">🌙</span>
+                </button>
+                <button class="btn-icon" id="lang-toggle" aria-label="Toggle language">
+                    <span style="font-size: 0.75rem; font-weight: 600;">عربي</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/theme.js"></script>
+    <script>
+        // Role tab switching
+        document.querySelectorAll('.role-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById('user-type').value = tab.dataset.type;
+            });
+        });
+
+        // Form submission
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const errorEl = document.getElementById('login-error');
+            const submitBtn = document.getElementById('submit-btn');
+
+            errorEl.style.display = 'none';
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner"></span>';
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const userType = document.getElementById('user-type').value;
+
+            try {
+                const result = await Auth.login(email, password, userType);
+                if (result.success) {
+                    window.location.href = userType === 'patient' ? 'patient/dashboard.html' : 'doctor/dashboard.html';
+                } else {
+                    errorEl.textContent = result.error || 'Login failed';
+                    errorEl.style.display = 'block';
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = `<span data-i18n="signIn">${typeof i18n !== 'undefined' ? i18n.t('signIn') : 'Sign In'}</span>`;
+                }
+            } catch (err) {
+                errorEl.textContent = 'Connection error. Please try again.';
+                errorEl.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<span data-i18n="signIn">${typeof i18n !== 'undefined' ? i18n.t('signIn') : 'Sign In'}</span>`;
+            }
+        });
+    </script>
+</body>
+
+</html>

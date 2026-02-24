@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "last_updated": "2026-02-08T07:54:04.089239",
+  "currency": "USD",
+  "diagnosis_prices": {
+    "ai_only": {
+      "price": 10.0,
+      "description": {
+        "en": "AI diagnosis only",
+        "ar": "تشخيص الذكاء الاصطناعي فقط"
+      }
+    },
+    "ai_doctor_review": {
+      "price": 50.0,
+      "description": {
+        "en": "AI + Doctor review",
+        "ar": "ذكاء اصطناعي + مراجعة طبيب"
+      }
+    },
+    "urgent": {
+      "multiplier": 1.5,
+      "description": {
+        "en": "Urgent case multiplier",
+        "ar": "مضاعف الحالات العاجلة"
+      }
+    }
+  },
+  "revenue_split": {
+    "platform_percentage": 30,
+    "doctor_percentage": 70,
+    "description": "Platform takes 30%, doctor receives 70% of doctor review fees"
+  },
+  "wallet": {
+    "min_deposit": 10.0,
+    "max_deposit": 1000.0,
+    "min_balance_for_diagnosis": 10.0
+  }
+}

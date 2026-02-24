@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Review - SkinDiagnosis</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <a href="/" class="sidebar-logo">
+                <span class="logo-icon">🔬</span>
+                <span class="logo-text">SkinDiagnosis</span>
+            </a>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span class="nav-icon">🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="cases.html" class="nav-item active">
+                    <span class="nav-icon">📋</span>
+                    <span>My Cases</span>
+                </a>
+                <a href="earnings.html" class="nav-item">
+                    <span class="nav-icon">💰</span>
+                    <span>Earnings</span>
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <span class="nav-icon">👤</span>
+                    <span>Profile</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="page-header">
+                <div>
+                    <a href="cases.html" style="font-size: var(--font-size-sm); color: var(--text-secondary);">← Back to
+                        Cases</a>
+                    <h1 class="page-title" style="margin-top: var(--space-2);">Case Review</h1>
+                </div>
+                <span class="badge badge-warning" id="case-status">Pending Review</span>
+            </header>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6);">
+                <!-- Left Column: Image and AI Analysis -->
+                <div>
+                    <!-- Image -->
+                    <div class="card" style="margin-bottom: var(--space-6);">
+                        <h3 style="margin-bottom: var(--space-4);">Uploaded Image</h3>
+                        <img id="case-image" src="" alt="Skin image"
+                            style="width: 100%; border-radius: var(--radius-lg);">
+                    </div>
+
+                    <!-- AI Analysis -->
+                    <div class="card">
+                        <h3 style="margin-bottom: var(--space-4);">AI Analysis Summary</h3>
+                        <div id="ai-summary">
+                            <div
+                                style="display: flex; justify-content: space-between; padding: var(--space-3); background: var(--bg-secondary); border-radius: var(--radius-md); margin-bottom: var(--space-2);">
+                                <span>Classification</span>
+                                <strong id="ai-classification">-</strong>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; padding: var(--space-3); background: var(--bg-secondary); border-radius: var(--radius-md); margin-bottom: var(--space-2);">
+                                <span>Category</span>
+                                <strong id="ai-category">-</strong>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; padding: var(--space-3); background: var(--bg-secondary); border-radius: var(--radius-md); margin-bottom: var(--space-2);">
+                                <span>Diagnosis</span>
+                                <strong id="ai-diagnosis">-</strong>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; padding: var(--space-3); background: var(--bg-secondary); border-radius: var(--radius-md);">
+                                <span>AI Confidence</span>
+                                <strong id="ai-confidence">-</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Patient Info and Review Form -->
+                <div>
+                    <!-- Patient Info -->
+                    <div class="card" style="margin-bottom: var(--space-6);">
+                        <h3 style="margin-bottom: var(--space-4);">Patient Information</h3>
+                        <div id="patient-info">
+                            <p><strong>Age:</strong> <span id="patient-age">-</span></p>
+                            <p><strong>Gender:</strong> <span id="patient-gender">-</span></p>
+                            <p><strong>Skin Type:</strong> <span id="patient-skin">-</span></p>
+                            <p><strong>Known Allergies:</strong> <span id="patient-allergies">None</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Review Form -->
+                    <div class="card">
+                        <h3 style="margin-bottom: var(--space-4);">Your Review</h3>
+                        <form id="review-form">
+                            <div class="form-group">
+                                <label class="form-label">Do you agree with the AI diagnosis?</label>
+                                <div style="display: flex; gap: var(--space-4);">
+                                    <label style="display: flex; align-items: center; gap: var(--space-2);">
+                                        <input type="radio" name="agrees" value="true" checked> Yes
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: var(--space-2);">
+                                        <input type="radio" name="agrees" value="false"> No, I have modifications
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group" id="modifications-group" style="display: none;">
+                                <label class="form-label">Your Diagnosis</label>
+                                <input type="text" id="modifications" class="form-input"
+                                    placeholder="Your corrected diagnosis">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Notes / Recommendations</label>
+                                <textarea id="notes" class="form-input" rows="4"
+                                    placeholder="Additional notes for the patient..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Prescription (if any)</label>
+                                <textarea id="prescription" class="form-input" rows="3"
+                                    placeholder="Recommended treatment..."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                Submit Review
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <button class="sidebar-toggle">☰</button>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        if (!Auth.requireAuth(['doctor'])) throw new Error('Unauthorized');
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const caseId = urlParams.get('id');
+
+        if (!caseId) {
+            window.location.href = 'cases.html';
+        }
+
+        async function loadCase() {
+            const result = await API.get(`/doctors/cases/${caseId}`);
+            if (!result.success) {
+                Toast.error('Case not found');
+                return;
+            }
+
+            const data = result.data;
+            const diagnosis = data.diagnosis;
+            const patient = data.patient_info;
+
+            // Set image
+            document.getElementById('case-image').src = `${Config.API_BASE_URL}/diagnosis/${caseId}/image`;
+
+            // AI analysis
+            document.getElementById('ai-classification').textContent =
+                diagnosis.pipeline?.stage1?.classification || '-';
+            document.getElementById('ai-category').textContent =
+                diagnosis.pipeline?.stage2?.category || '-';
+            document.getElementById('ai-diagnosis').textContent =
+                diagnosis.pipeline?.stage3?.disease_name?.en || '-';
+            document.getElementById('ai-confidence').textContent =
+                diagnosis.pipeline?.stage4?.final_confidence
+                    ? `${(diagnosis.pipeline.stage4.final_confidence * 100).toFixed(0)}%`
+                    : '-';
+
+            // Patient info
+            document.getElementById('patient-gender').textContent = patient.gender || '-';
+            document.getElementById('patient-skin').textContent = patient.skin_type || '-';
+            document.getElementById('patient-allergies').textContent =
+                patient.allergies?.join(', ') || 'None';
+        }
+
+        loadCase();
+
+        // Toggle modifications field
+        document.querySelectorAll('input[name="agrees"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                const showMods = document.querySelector('input[name="agrees"]:checked').value === 'false';
+                document.getElementById('modifications-group').style.display = showMods ? 'block' : 'none';
+            });
+        });
+
+        // Submit review
+        document.getElementById('review-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const agrees = document.querySelector('input[name="agrees"]:checked').value === 'true';
+            const data = {
+                agrees_with_ai: agrees,
+                notes: document.getElementById('notes').value,
+                prescription: document.getElementById('prescription').value
+            };
+
+            if (!agrees) {
+                data.modifications = document.getElementById('modifications').value;
+            }
+
+            const result = await API.post(`/doctors/cases/${caseId}/review`, data);
+
+            if (result.success) {
+                Toast.success('Review submitted successfully!');
+                setTimeout(() => window.location.href = 'cases.html', 1500);
+            } else {
+                Toast.error(result.error || 'Failed to submit review');
+            }
+        });
+    </script>
+</body>
+
+</html>

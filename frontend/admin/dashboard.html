@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - SkinDiagnosis</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a href="/" class="sidebar-logo">
+                <span class="logo-icon">🔬</span>
+                <span class="logo-text">Admin Panel</span>
+            </a>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <span class="nav-icon">🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="doctors.html" class="nav-item">
+                    <span class="nav-icon">👨‍⚕️</span>
+                    <span>Doctors</span>
+                </a>
+                <a href="diseases.html" class="nav-item">
+                    <span class="nav-icon">🦠</span>
+                    <span>Diseases</span>
+                </a>
+                <a href="pricing.html" class="nav-item">
+                    <span class="nav-icon">💵</span>
+                    <span>Pricing</span>
+                </a>
+                <a href="ai-routing.html" class="nav-item">
+                    <span class="nav-icon">🤖</span>
+                    <span>AI Routing</span>
+                </a>
+                <a href="logs.html" class="nav-item">
+                    <span class="nav-icon">📜</span>
+                    <span>Logs</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" class="nav-item" id="logout-btn">
+                    <span class="nav-icon">🚪</span>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="page-header">
+                <h1 class="page-title">Admin Dashboard</h1>
+            </header>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">Total Patients</span>
+                        <div class="stat-card-icon">👥</div>
+                    </div>
+                    <div class="stat-card-value" id="stat-patients">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">Active Doctors</span>
+                        <div class="stat-card-icon">👨‍⚕️</div>
+                    </div>
+                    <div class="stat-card-value" id="stat-doctors">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">Total Diagnoses</span>
+                        <div class="stat-card-icon">📊</div>
+                    </div>
+                    <div class="stat-card-value" id="stat-diagnoses">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">Total Revenue</span>
+                        <div class="stat-card-icon" style="background: var(--success-light);">💰</div>
+                    </div>
+                    <div class="stat-card-value" id="stat-revenue">$0</div>
+                </div>
+            </div>
+
+            <div
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); margin-top: var(--space-8);">
+                <!-- Pending Doctor Approvals -->
+                <div class="card">
+                    <div class="card-header"
+                        style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3 class="card-title">Pending Doctor Approvals</h3>
+                        <a href="doctors.html" style="font-size: var(--font-size-sm);">View All →</a>
+                    </div>
+                    <div id="pending-doctors">
+                        <p style="text-align: center; color: var(--text-tertiary); padding: var(--space-6);">
+                            No pending approvals
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="card">
+                    <div class="card-header"
+                        style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3 class="card-title">Recent Activity</h3>
+                        <a href="logs.html" style="font-size: var(--font-size-sm);">View Logs →</a>
+                    </div>
+                    <div id="recent-activity">
+                        <p style="text-align: center; color: var(--text-tertiary); padding: var(--space-6);">
+                            Loading activity...
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card" style="margin-top: var(--space-8);">
+                <div class="card-header">
+                    <h3 class="card-title">Quick Actions</h3>
+                </div>
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--space-4);">
+                    <a href="doctors.html" class="btn btn-outline">👨‍⚕️ Manage Doctors</a>
+                    <a href="diseases.html" class="btn btn-outline">🦠 Edit Diseases</a>
+                    <a href="pricing.html" class="btn btn-outline">💵 Update Pricing</a>
+                    <a href="ai-routing.html" class="btn btn-outline">🤖 AI Settings</a>
+                </div>
+            </div>
+        </main>
+
+        <button class="sidebar-toggle">☰</button>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        // Admin auth uses different check
+        const user = Auth.getUser();
+        if (!user || user.user_type !== 'admin') {
+            window.location.href = '/login.html';
+            throw new Error('Unauthorized');
+        }
+
+        async function loadDashboard() {
+            // Get statistics
+            const statsResult = await API.get('/admin/statistics');
+            if (statsResult.success) {
+                const stats = statsResult.data.statistics;
+                document.getElementById('stat-patients').textContent = stats.total_patients || 0;
+                document.getElementById('stat-doctors').textContent = stats.active_doctors || 0;
+                document.getElementById('stat-diagnoses').textContent = stats.total_diagnoses || 0;
+                document.getElementById('stat-revenue').textContent = `$${stats.total_revenue || 0}`;
+            }
+
+            // Get pending doctors
+            const doctorsResult = await API.get('/admin/doctors?status=pending');
+            if (doctorsResult.success && doctorsResult.data.doctors?.length > 0) {
+                const container = document.getElementById('pending-doctors');
+                container.innerHTML = doctorsResult.data.doctors.slice(0, 3).map(d => `
+                    <div style="padding: var(--space-3); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Dr. ${d.profile?.first_name || ''} ${d.profile?.last_name || ''}</strong>
+                            <p style="font-size: var(--font-size-sm); color: var(--text-tertiary); margin: 0;">
+                                ${d.specialty || 'General'}
+                            </p>
+                        </div>
+                        <div style="display: flex; gap: var(--space-2);">
+                            <button class="btn btn-sm btn-primary approve-btn" data-id="${d.id}">✓</button>
+                            <button class="btn btn-sm btn-ghost reject-btn" data-id="${d.id}">✕</button>
+                        </div>
+                    </div>
+                `).join('');
+
+                // Approval handlers
+                container.querySelectorAll('.approve-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        await API.post(`/admin/doctors/${btn.dataset.id}/approve`);
+                        Toast.success('Doctor approved');
+                        loadDashboard();
+                    });
+                });
+                container.querySelectorAll('.reject-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        await API.post(`/admin/doctors/${btn.dataset.id}/reject`);
+                        Toast.info('Doctor rejected');
+                        loadDashboard();
+                    });
+                });
+            }
+
+            // Get recent logs
+            const logsResult = await API.get('/admin/logs?category=api&limit=5');
+            if (logsResult.success && logsResult.data.logs?.length > 0) {
+                const container = document.getElementById('recent-activity');
+                container.innerHTML = logsResult.data.logs.map(log => `
+                    <div style="padding: var(--space-2); font-size: var(--font-size-sm); border-bottom: 1px solid var(--border-color);">
+                        <span style="color: var(--text-tertiary);">${new Date(log.timestamp).toLocaleTimeString()}</span>
+                        <span style="margin-left: var(--space-2);">${log.endpoint || log.action || 'Activity'}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        loadDashboard();
+
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            Auth.logout();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Logs - Admin</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .log-entry {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: var(--font-size-sm);
+            padding: var(--space-2) var(--space-3);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .log-entry:hover {
+            background: var(--bg-secondary);
+        }
+
+        .log-timestamp {
+            color: var(--text-tertiary);
+            min-width: 180px;
+            display: inline-block;
+        }
+
+        .log-level {
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-xs);
+            margin-right: var(--space-2);
+        }
+
+        .log-level.info {
+            background: var(--info-light);
+            color: var(--info);
+        }
+
+        .log-level.error {
+            background: var(--error-light);
+            color: var(--error);
+        }
+
+        .log-level.warning {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <a href="/" class="sidebar-logo">
+                <span class="logo-icon">🔬</span>
+                <span class="logo-text">Admin Panel</span>
+            </a>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span class="nav-icon">🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="doctors.html" class="nav-item">
+                    <span class="nav-icon">👨‍⚕️</span>
+                    <span>Doctors</span>
+                </a>
+                <a href="diseases.html" class="nav-item">
+                    <span class="nav-icon">🦠</span>
+                    <span>Diseases</span>
+                </a>
+                <a href="pricing.html" class="nav-item">
+                    <span class="nav-icon">💵</span>
+                    <span>Pricing</span>
+                </a>
+                <a href="ai-routing.html" class="nav-item">
+                    <span class="nav-icon">🤖</span>
+                    <span>AI Routing</span>
+                </a>
+                <a href="logs.html" class="nav-item active">
+                    <span class="nav-icon">📜</span>
+                    <span>Logs</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" class="nav-item" id="logout-btn">
+                    <span class="nav-icon">🚪</span>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="page-header">
+                <h1 class="page-title">System Logs</h1>
+                <button class="btn btn-outline" id="refresh-btn">🔄 Refresh</button>
+            </header>
+
+            <!-- Filters -->
+            <div class="tabs" style="margin-bottom: var(--space-6);">
+                <button class="tab active" data-category="api">API</button>
+                <button class="tab" data-category="ai">AI</button>
+                <button class="tab" data-category="auth">Auth</button>
+                <button class="tab" data-category="errors">Errors</button>
+                <button class="tab" data-category="audit">Audit</button>
+            </div>
+
+            <!-- Logs Container -->
+            <div class="card" style="padding: 0; max-height: 600px; overflow-y: auto;">
+                <div id="logs-container">
+                    <p style="text-align: center; color: var(--text-tertiary); padding: var(--space-8);">
+                        Loading logs...
+                    </p>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div style="display: flex; justify-content: center; gap: var(--space-2); margin-top: var(--space-4);">
+                <button class="btn btn-outline btn-sm" id="prev-page" disabled>← Previous</button>
+                <span id="page-info" style="padding: var(--space-2);">Page 1</span>
+                <button class="btn btn-outline btn-sm" id="next-page">Next →</button>
+            </div>
+        </main>
+
+        <button class="sidebar-toggle">☰</button>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        const user = Auth.getUser();
+        if (!user || user.user_type !== 'admin') {
+            window.location.href = '/login.html';
+            throw new Error('Unauthorized');
+        }
+
+        let currentCategory = 'api';
+        let currentPage = 1;
+        const pageSize = 50;
+
+        async function loadLogs() {
+            const offset = (currentPage - 1) * pageSize;
+            const result = await API.get(`/admin/logs?category=${currentCategory}&limit=${pageSize}&offset=${offset}`);
+
+            const container = document.getElementById('logs-container');
+
+            if (!result.success || !result.data.logs?.length) {
+                container.innerHTML = `
+                    <p style="text-align: center; color: var(--text-tertiary); padding: var(--space-8);">
+                        No logs found for this category
+                    </p>
+                `;
+                return;
+            }
+
+            container.innerHTML = result.data.logs.map(log => {
+                const level = log.level || 'info';
+                return `
+                    <div class="log-entry">
+                        <span class="log-timestamp">${new Date(log.timestamp).toLocaleString()}</span>
+                        <span class="log-level ${level}">${level.toUpperCase()}</span>
+                        <span>${log.message || log.endpoint || log.action || JSON.stringify(log)}</span>
+                    </div>
+                `;
+            }).join('');
+
+            // Update pagination
+            document.getElementById('page-info').textContent = `Page ${currentPage}`;
+            document.getElementById('prev-page').disabled = currentPage === 1;
+            document.getElementById('next-page').disabled = result.data.logs.length < pageSize;
+        }
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentCategory = tab.dataset.category;
+                currentPage = 1;
+                loadLogs();
+            });
+        });
+
+        // Pagination
+        document.getElementById('prev-page').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                loadLogs();
+            }
+        });
+
+        document.getElementById('next-page').addEventListener('click', () => {
+            currentPage++;
+            loadLogs();
+        });
+
+        // Refresh
+        document.getElementById('refresh-btn').addEventListener('click', () => {
+            loadLogs();
+            Toast.info('Logs refreshed');
+        });
+
+        loadLogs();
+
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            Auth.logout();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Diagnosis - SkinDiagnosis</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a href="/" class="sidebar-logo">
+                <span class="logo-icon">🔬</span>
+                <span class="logo-text">SkinDiagnosis</span>
+            </a>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span class="nav-icon">🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="new-diagnosis.html" class="nav-item active">
+                    <span class="nav-icon">📷</span>
+                    <span>New Diagnosis</span>
+                </a>
+                <a href="history.html" class="nav-item">
+                    <span class="nav-icon">📋</span>
+                    <span>History</span>
+                </a>
+                <a href="wallet.html" class="nav-item">
+                    <span class="nav-icon">💳</span>
+                    <span>Wallet</span>
+                </a>
+                <a href="assistant.html" class="nav-item">
+                    <span class="nav-icon">🤖</span>
+                    <span>AI Assistant</span>
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <span class="nav-icon">👤</span>
+                    <span>Profile</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" class="nav-item" id="logout-btn">
+                    <span class="nav-icon">🚪</span>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="page-header">
+                <h1 class="page-title">New Diagnosis</h1>
+            </header>
+
+            <!-- Step Indicator -->
+            <div class="steps-indicator"
+                style="display: flex; gap: var(--space-8); margin-bottom: var(--space-8); justify-content: center;">
+                <div class="step-indicator active" data-step="1">
+                    <div class="step-circle">1</div>
+                    <span>Upload Image</span>
+                </div>
+                <div class="step-indicator" data-step="2">
+                    <div class="step-circle">2</div>
+                    <span>Select Type</span>
+                </div>
+                <div class="step-indicator" data-step="3">
+                    <div class="step-circle">3</div>
+                    <span>Processing</span>
+                </div>
+            </div>
+
+            <!-- Step 1: Upload -->
+            <div id="step-1" class="step-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Upload Skin Image</h3>
+                    </div>
+                    <div class="upload-area" id="upload-area">
+                        <input type="file" id="image-input" accept="image/*" style="display: none;">
+                        <div class="upload-icon">📤</div>
+                        <p style="font-size: var(--font-size-lg); margin-bottom: var(--space-2);">
+                            Drag & drop or click to upload
+                        </p>
+                        <p style="color: var(--text-tertiary); font-size: var(--font-size-sm);">
+                            Supported: JPG, PNG, HEIC • Max 10MB
+                        </p>
+                    </div>
+                    <div id="image-preview" style="display: none; margin-top: var(--space-4);">
+                        <img id="preview-img"
+                            style="max-width: 100%; max-height: 300px; border-radius: var(--radius-lg);">
+                        <button class="btn btn-ghost" id="remove-image" style="margin-top: var(--space-2);">
+                            ✕ Remove
+                        </button>
+                    </div>
+                    <div style="margin-top: var(--space-6);">
+                        <button class="btn btn-primary" id="next-step-1" disabled style="width: 100%;">
+                            Continue →
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Diagnosis Type -->
+            <div id="step-2" class="step-content" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Select Diagnosis Type</h3>
+                    </div>
+
+                    <div style="display: grid; gap: var(--space-4);">
+                        <label class="diagnosis-option"
+                            style="border: 2px solid var(--border-color); border-radius: var(--radius-lg); padding: var(--space-5); cursor: pointer; display: flex; align-items: center; gap: var(--space-4);">
+                            <input type="radio" name="diagnosis_type" value="ai_only" checked>
+                            <div>
+                                <strong>AI Diagnosis Only</strong>
+                                <p style="color: var(--text-secondary); font-size: var(--font-size-sm); margin: 0;">
+                                    Fast AI-powered analysis • $5.00
+                                </p>
+                            </div>
+                            <span style="margin-left: auto; font-weight: 600; color: var(--primary-600);">$5.00</span>
+                        </label>
+
+                        <label class="diagnosis-option"
+                            style="border: 2px solid var(--border-color); border-radius: var(--radius-lg); padding: var(--space-5); cursor: pointer; display: flex; align-items: center; gap: var(--space-4);">
+                            <input type="radio" name="diagnosis_type" value="ai_doctor_review">
+                            <div>
+                                <strong>AI + Doctor Review</strong>
+                                <p style="color: var(--text-secondary); font-size: var(--font-size-sm); margin: 0;">
+                                    AI analysis verified by certified dermatologist • $15.00
+                                </p>
+                            </div>
+                            <span style="margin-left: auto; font-weight: 600; color: var(--primary-600);">$15.00</span>
+                        </label>
+                    </div>
+
+                    <p
+                        style="margin-top: var(--space-4); padding: var(--space-3); background: var(--bg-secondary); border-radius: var(--radius-md); font-size: var(--font-size-sm);">
+                        💳 Your balance: <span id="wallet-balance">$0.00</span>
+                    </p>
+
+                    <div style="margin-top: var(--space-6); display: flex; gap: var(--space-4);">
+                        <button class="btn btn-outline" id="back-step-2" style="flex: 1;">
+                            ← Back
+                        </button>
+                        <button class="btn btn-primary" id="submit-diagnosis" style="flex: 2;">
+                            Submit for Diagnosis
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Processing -->
+            <div id="step-3" class="step-content" style="display: none;">
+                <div class="card" style="text-align: center;">
+                    <div class="spinner" style="margin: 0 auto var(--space-6);"></div>
+                    <h3>Analyzing Your Image...</h3>
+                    <p style="color: var(--text-secondary);">Our AI is processing your image through multiple stages.
+                    </p>
+
+                    <div style="margin-top: var(--space-6);">
+                        <div class="progress" style="margin-bottom: var(--space-2);">
+                            <div class="progress-bar" id="progress-bar" style="width: 0%;"></div>
+                        </div>
+                        <p id="progress-text" style="font-size: var(--font-size-sm); color: var(--text-tertiary);">
+                            Stage 0: Validating image...
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <button class="sidebar-toggle">☰</button>
+    </div>
+
+    <style>
+        .step-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-2);
+            color: var(--text-tertiary);
+        }
+
+        .step-indicator.active {
+            color: var(--primary-600);
+        }
+
+        .step-indicator.active .step-circle {
+            background: var(--primary-600);
+            color: white;
+        }
+
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid currentColor;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .diagnosis-option:has(input:checked) {
+            border-color: var(--primary-500) !important;
+            background: var(--primary-50);
+        }
+    </style>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        if (!Auth.requireAuth(['patient'])) throw new Error('Unauthorized');
+
+        let selectedFile = null;
+
+        // Upload area
+        FileUpload.init('#upload-area', {
+            onFile: (file) => {
+                if (file.size > 10 * 1024 * 1024) {
+                    Toast.error('File too large. Max 10MB allowed.');
+                    return;
+                }
+                selectedFile = file;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('preview-img').src = e.target.result;
+                    document.getElementById('image-preview').style.display = 'block';
+                    document.getElementById('upload-area').style.display = 'none';
+                    document.getElementById('next-step-1').disabled = false;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Remove image
+        document.getElementById('remove-image').addEventListener('click', () => {
+            selectedFile = null;
+            document.getElementById('image-preview').style.display = 'none';
+            document.getElementById('upload-area').style.display = 'block';
+            document.getElementById('next-step-1').disabled = true;
+        });
+
+        // Navigation
+        document.getElementById('next-step-1').addEventListener('click', async () => {
+            document.getElementById('step-1').style.display = 'none';
+            document.getElementById('step-2').style.display = 'block';
+            document.querySelectorAll('.step-indicator')[0].classList.remove('active');
+            document.querySelectorAll('.step-indicator')[1].classList.add('active');
+
+            // Load balance
+            const result = await API.get('/wallet/balance');
+            if (result.success) {
+                document.getElementById('wallet-balance').textContent = `$${result.data.balance || 0}`;
+            }
+        });
+
+        document.getElementById('back-step-2').addEventListener('click', () => {
+            document.getElementById('step-2').style.display = 'none';
+            document.getElementById('step-1').style.display = 'block';
+            document.querySelectorAll('.step-indicator')[1].classList.remove('active');
+            document.querySelectorAll('.step-indicator')[0].classList.add('active');
+        });
+
+        // Submit
+        document.getElementById('submit-diagnosis').addEventListener('click', async () => {
+            const type = document.querySelector('input[name="diagnosis_type"]:checked').value;
+
+            document.getElementById('step-2').style.display = 'none';
+            document.getElementById('step-3').style.display = 'block';
+            document.querySelectorAll('.step-indicator')[1].classList.remove('active');
+            document.querySelectorAll('.step-indicator')[2].classList.add('active');
+
+            const result = await API.upload('/diagnosis/upload', selectedFile, { type });
+
+            if (result.success) {
+                // Simulate progress
+                const stages = [
+                    'Stage 1: Classifying...',
+                    'Stage 2: Categorizing...',
+                    'Stage 3: Diagnosing...',
+                    'Stage 4: Generating report...',
+                    'Complete!'
+                ];
+                let progress = 20;
+                for (const stage of stages) {
+                    document.getElementById('progress-text').textContent = stage;
+                    document.getElementById('progress-bar').style.width = `${progress}%`;
+                    await new Promise(r => setTimeout(r, 1000));
+                    progress += 20;
+                }
+                window.location.href = `result.html?id=${result.data.diagnosis_id}`;
+            } else {
+                Toast.error(result.error || 'Failed to upload');
+                document.getElementById('step-3').style.display = 'none';
+                document.getElementById('step-2').style.display = 'block';
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            Auth.logout();
+        });
+    </script>
+</body>
+
+</html>

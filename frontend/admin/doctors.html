@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Doctors - Admin</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <a href="/" class="sidebar-logo">
+                <span class="logo-icon">🔬</span>
+                <span class="logo-text">Admin Panel</span>
+            </a>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span class="nav-icon">🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="doctors.html" class="nav-item active">
+                    <span class="nav-icon">👨‍⚕️</span>
+                    <span>Doctors</span>
+                </a>
+                <a href="diseases.html" class="nav-item">
+                    <span class="nav-icon">🦠</span>
+                    <span>Diseases</span>
+                </a>
+                <a href="pricing.html" class="nav-item">
+                    <span class="nav-icon">💵</span>
+                    <span>Pricing</span>
+                </a>
+                <a href="ai-routing.html" class="nav-item">
+                    <span class="nav-icon">🤖</span>
+                    <span>AI Routing</span>
+                </a>
+                <a href="logs.html" class="nav-item">
+                    <span class="nav-icon">📜</span>
+                    <span>Logs</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" class="nav-item" id="logout-btn">
+                    <span class="nav-icon">🚪</span>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="page-header">
+                <h1 class="page-title">Manage Doctors</h1>
+            </header>
+
+            <!-- Filters -->
+            <div class="tabs" style="margin-bottom: var(--space-6);">
+                <button class="tab active" data-status="all">All</button>
+                <button class="tab" data-status="pending">Pending</button>
+                <button class="tab" data-status="approved">Approved</button>
+                <button class="tab" data-status="rejected">Rejected</button>
+            </div>
+
+            <!-- Doctors Table -->
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Specialty</th>
+                            <th>License #</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="doctors-table">
+                        <tr>
+                            <td colspan="5" style="text-align: center; color: var(--text-tertiary);">
+                                Loading...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+        <button class="sidebar-toggle">☰</button>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        const user = Auth.getUser();
+        if (!user || user.user_type !== 'admin') {
+            window.location.href = '/login.html';
+            throw new Error('Unauthorized');
+        }
+
+        let currentStatus = 'all';
+
+        async function loadDoctors(status = 'all') {
+            currentStatus = status;
+            const query = status === 'all' ? '' : `?status=${status}`;
+            const result = await API.get(`/admin/doctors${query}`);
+
+            const tbody = document.getElementById('doctors-table');
+
+            if (!result.success || !result.data.doctors?.length) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="text-align: center; color: var(--text-tertiary);">
+                            No doctors found
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = result.data.doctors.map(d => `
+                <tr>
+                    <td>
+                        <strong>Dr. ${d.profile?.first_name || ''} ${d.profile?.last_name || ''}</strong>
+                        <div style="font-size: var(--font-size-sm); color: var(--text-tertiary);">${d.email}</div>
+                    </td>
+                    <td>${d.specialty || 'General'}</td>
+                    <td>${d.license_number || '-'}</td>
+                    <td>
+                        <span class="badge badge-${d.status === 'approved' ? 'success' : d.status === 'pending' ? 'warning' : 'error'}">
+                            ${d.status}
+                        </span>
+                    </td>
+                    <td>
+                        ${d.status === 'pending' ? `
+                            <button class="btn btn-sm btn-primary approve-btn" data-id="${d.id}">Approve</button>
+                            <button class="btn btn-sm btn-ghost reject-btn" data-id="${d.id}">Reject</button>
+                        ` : d.status === 'approved' ? `
+                            <button class="btn btn-sm btn-ghost suspend-btn" data-id="${d.id}">Suspend</button>
+                        ` : `
+                            <button class="btn btn-sm btn-outline reinstate-btn" data-id="${d.id}">Reinstate</button>
+                        `}
+                    </td>
+                </tr>
+            `).join('');
+
+            // Event handlers
+            tbody.querySelectorAll('.approve-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    await API.post(`/admin/doctors/${btn.dataset.id}/approve`);
+                    Toast.success('Doctor approved');
+                    loadDoctors(currentStatus);
+                });
+            });
+
+            tbody.querySelectorAll('.reject-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    await API.post(`/admin/doctors/${btn.dataset.id}/reject`);
+                    Toast.info('Doctor rejected');
+                    loadDoctors(currentStatus);
+                });
+            });
+
+            tbody.querySelectorAll('.suspend-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    await API.post(`/admin/doctors/${btn.dataset.id}/reject`);
+                    Toast.info('Doctor suspended');
+                    loadDoctors(currentStatus);
+                });
+            });
+
+            tbody.querySelectorAll('.reinstate-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    await API.post(`/admin/doctors/${btn.dataset.id}/approve`);
+                    Toast.success('Doctor reinstated');
+                    loadDoctors(currentStatus);
+                });
+            });
+        }
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                loadDoctors(tab.dataset.status);
+            });
+        });
+
+        loadDoctors();
+
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            Auth.logout();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - SkinDiagnosis</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <a href="/" class="sidebar-logo">
+                <span class="logo-icon">🔬</span>
+                <span class="logo-text">SkinDiagnosis</span>
+            </a>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span class="nav-icon">🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="new-diagnosis.html" class="nav-item">
+                    <span class="nav-icon">📷</span>
+                    <span>New Diagnosis</span>
+                </a>
+                <a href="history.html" class="nav-item">
+                    <span class="nav-icon">📋</span>
+                    <span>History</span>
+                </a>
+                <a href="wallet.html" class="nav-item">
+                    <span class="nav-icon">💳</span>
+                    <span>Wallet</span>
+                </a>
+                <a href="assistant.html" class="nav-item">
+                    <span class="nav-icon">🤖</span>
+                    <span>AI Assistant</span>
+                </a>
+                <a href="profile.html" class="nav-item active">
+                    <span class="nav-icon">👤</span>
+                    <span>Profile</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" class="nav-item" id="logout-btn">
+                    <span class="nav-icon">🚪</span>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="page-header">
+                <h1 class="page-title">Profile Settings</h1>
+            </header>
+
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: var(--space-6);">
+                <!-- Personal Info -->
+                <div class="card">
+                    <h3 style="margin-bottom: var(--space-4);">Personal Information</h3>
+                    <form id="profile-form">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+                            <div class="form-group">
+                                <label class="form-label">First Name</label>
+                                <input type="text" id="first-name" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" id="last-name" class="form-input">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" id="email" class="form-input" readonly
+                                style="background: var(--bg-secondary);">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone</label>
+                            <input type="tel" id="phone" class="form-input">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            Save Changes
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Medical Profile -->
+                <div class="card">
+                    <h3 style="margin-bottom: var(--space-4);">Medical Profile</h3>
+                    <form id="medical-form">
+                        <div class="form-group">
+                            <label class="form-label">Date of Birth</label>
+                            <input type="date" id="dob" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Gender</label>
+                            <select id="gender" class="form-input">
+                                <option value="">Select</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Skin Type</label>
+                            <select id="skin-type" class="form-input">
+                                <option value="">Select</option>
+                                <option value="type1">Type I - Very Fair</option>
+                                <option value="type2">Type II - Fair</option>
+                                <option value="type3">Type III - Medium</option>
+                                <option value="type4">Type IV - Olive</option>
+                                <option value="type5">Type V - Brown</option>
+                                <option value="type6">Type VI - Dark Brown</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Known Allergies</label>
+                            <textarea id="allergies" class="form-input" rows="2"
+                                placeholder="e.g., Penicillin, Latex"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            Save Medical Info
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Preferences -->
+                <div class="card">
+                    <h3 style="margin-bottom: var(--space-4);">Preferences</h3>
+                    <div class="form-group">
+                        <label style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>Dark Mode</span>
+                            <button class="btn btn-outline btn-sm" id="theme-toggle-btn">Toggle</button>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>Language</span>
+                            <button class="btn btn-outline btn-sm" id="lang-toggle-btn">EN / AR</button>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Security -->
+                <div class="card">
+                    <h3 style="margin-bottom: var(--space-4);">Security</h3>
+                    <form id="password-form">
+                        <div class="form-group">
+                            <label class="form-label">Current Password</label>
+                            <input type="password" id="current-password" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">New Password</label>
+                            <input type="password" id="new-password" class="form-input" minlength="8">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Confirm New Password</label>
+                            <input type="password" id="confirm-password" class="form-input">
+                        </div>
+                        <button type="submit" class="btn btn-outline" style="width: 100%;">
+                            Change Password
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <button class="sidebar-toggle">☰</button>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/i18n.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        if (!Auth.requireAuth(['patient'])) throw new Error('Unauthorized');
+
+        async function loadProfile() {
+            const result = await API.get('/patients/profile');
+            if (result.success) {
+                const p = result.data.profile;
+                document.getElementById('first-name').value = p.profile?.first_name || '';
+                document.getElementById('last-name').value = p.profile?.last_name || '';
+                document.getElementById('email').value = p.email || '';
+                document.getElementById('phone').value = p.profile?.phone || '';
+                document.getElementById('dob').value = p.medical_profile?.date_of_birth || '';
+                document.getElementById('gender').value = p.medical_profile?.gender || '';
+                document.getElementById('skin-type').value = p.medical_profile?.skin_type || '';
+                document.getElementById('allergies').value = (p.medical_profile?.allergies || []).join(', ');
+            }
+        }
+
+        loadProfile();
+
+        // Save profile
+        document.getElementById('profile-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const result = await API.put('/patients/profile', {
+                first_name: document.getElementById('first-name').value,
+                last_name: document.getElementById('last-name').value,
+                phone: document.getElementById('phone').value
+            });
+            Toast[result.success ? 'success' : 'error'](result.success ? 'Profile updated' : result.error);
+        });
+
+        // Save medical
+        document.getElementById('medical-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const allergies = document.getElementById('allergies').value.split(',').map(a => a.trim()).filter(Boolean);
+            const result = await API.put('/patients/profile', {
+                date_of_birth: document.getElementById('dob').value,
+                gender: document.getElementById('gender').value,
+                skin_type: document.getElementById('skin-type').value,
+                allergies
+            });
+            Toast[result.success ? 'success' : 'error'](result.success ? 'Medical info updated' : result.error);
+        });
+
+        // Theme toggle
+        document.getElementById('theme-toggle-btn').addEventListener('click', () => Theme.toggle());
+
+        // Language toggle
+        document.getElementById('lang-toggle-btn').addEventListener('click', () => i18n.toggle());
+
+        // Password change
+        document.getElementById('password-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const newPass = document.getElementById('new-password').value;
+            if (newPass !== document.getElementById('confirm-password').value) {
+                Toast.error('Passwords do not match');
+                return;
+            }
+            Toast.info('Password change not implemented in demo');
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            Auth.logout();
+        });
+    </script>
+</body>
+
+</html>

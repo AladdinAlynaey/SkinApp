@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "last_updated": "2026-02-08T07:54:04.089593",
+  "providers": {
+    "internal": {
+      "enabled": true,
+      "priority": 1,
+      "description": "Internal trained models"
+    },
+    "openrouter": {
+      "enabled": true,
+      "priority": 2,
+      "model": "anthropic/claude-3-haiku",
+      "timeout_ms": 30000,
+      "description": "OpenRouter LLM API"
+    },
+    "gemini": {
+      "enabled": true,
+      "priority": 3,
+      "model": "gemini-1.5-flash",
+      "timeout_ms": 30000,
+      "description": "Google Gemini Vision API"
+    },
+    "groq": {
+      "enabled": true,
+      "priority": 4,
+      "model": "llama-3.1-70b-versatile",
+      "timeout_ms": 15000,
+      "description": "Groq Fast Inference API"
+    }
+  },
+  "stage_routing": {
+    "stage0_validation": {
+      "primary": [
+        "internal",
+        "gemini"
+      ],
+      "description": "Image validation gate"
+    },
+    "stage1_normal_abnormal": {
+      "primary": [
+        "internal",
+        "openrouter"
+      ],
+      "fallback": [
+        "gemini",
+        "groq"
+      ],
+      "description": "Normal vs abnormal classification"
+    },
+    "stage2_category": {
+      "primary": [
+        "openrouter",
+        "gemini"
+      ],
+      "fallback": [
+        "groq",
+        "internal"
+      ],
+      "description": "Disease category classification"
+    },
+    "stage3_diagnosis": {
+      "primary": [
+        "openrouter",
+        "gemini"
+      ],
+      "fallback": [
+        "groq"
+      ],
+      "description": "Fine-grained diagnosis"
+    },
+    "stage4_fusion": {
+      "primary": [
+        "openrouter"
+      ],
+      "fallback": [
+        "groq"
+      ],
+      "description": "AI fusion and explanation"
+    }
+  },
+  "fallback_behavior": {
+    "max_retries": 3,
+    "retry_delay_ms": 1000,
+    "exponential_backoff": true,
+    "fail_open": false,
+    "description": "If all providers fail, reject gracefully"
+  }
+}

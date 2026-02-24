@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+    <meta name="theme-color" content="#0a0f1a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Register - SkinDiagnosis</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Config first -->
+    <script src="js/config.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/layout.css">
+</head>
+
+<body>
+    <div class="auth-layout">
+        <div class="auth-card" style="max-width: 420px;">
+            <div class="auth-header">
+                <a href="/" class="auth-logo">
+                    <span class="logo-icon">🔬</span>
+                    <span class="logo-text">SkinDiagnosis</span>
+                </a>
+                <h1 class="auth-title" data-i18n="registerTitle">Create Account</h1>
+                <p class="auth-subtitle" data-i18n="registerSubtitle">Start your health journey</p>
+            </div>
+
+            <form id="register-form" class="auth-form">
+                <!-- Role Tabs -->
+                <div class="role-tabs">
+                    <button type="button" class="role-tab active" data-type="patient"
+                        data-i18n="patient">Patient</button>
+                    <button type="button" class="role-tab" data-type="doctor" data-i18n="doctor">Doctor</button>
+                </div>
+                <input type="hidden" name="user_type" id="user-type" value="patient">
+
+                <div class="grid grid-2">
+                    <div class="form-group">
+                        <label class="form-label" for="first-name" data-i18n="firstName">First Name</label>
+                        <input type="text" id="first-name" name="first_name" class="form-input" required
+                            autocomplete="given-name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="last-name" data-i18n="lastName">Last Name</label>
+                        <input type="text" id="last-name" name="last_name" class="form-input" required
+                            autocomplete="family-name">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email" data-i18n="email">Email</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="you@example.com"
+                        required autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="phone" data-i18n="phone">Phone</label>
+                    <input type="tel" id="phone" name="phone" class="form-input" placeholder="+1 234 567 8900"
+                        autocomplete="tel">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password" data-i18n="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-input"
+                        placeholder="Min. 8 characters" required minlength="8" autocomplete="new-password">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="confirm-password" data-i18n="confirmPassword">Confirm
+                        Password</label>
+                    <input type="password" id="confirm-password" name="confirm_password" class="form-input" required
+                        autocomplete="new-password">
+                </div>
+
+                <!-- Doctor fields -->
+                <div id="doctor-fields" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label" for="license-number" data-i18n="licenseNumber">License Number</label>
+                        <input type="text" id="license-number" name="license_number" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="specialty" data-i18n="specialty">Specialty</label>
+                        <select id="specialty" name="specialty" class="form-input form-select">
+                            <option value="">Select specialty</option>
+                            <option value="general_dermatology">General Dermatology</option>
+                            <option value="pediatric_dermatology">Pediatric Dermatology</option>
+                            <option value="cosmetic_dermatology">Cosmetic Dermatology</option>
+                            <option value="dermatopathology">Dermatopathology</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-check">
+                        <input type="checkbox" name="terms" class="form-checkbox" required>
+                        <span class="form-check-label">
+                            <span data-i18n="agreeTerms">I agree to the</span>
+                            <a href="#">Terms</a> & <a href="#">Privacy</a>
+                        </span>
+                    </label>
+                </div>
+
+                <div id="register-error" class="form-error" style="display: none;"></div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg" id="submit-btn">
+                    <span data-i18n="createAccount">Create Account</span>
+                </button>
+            </form>
+
+            <p class="auth-footer">
+                <span data-i18n="haveAccount">Already have an account?</span>
+                <a href="login.html" data-i18n="signIn">Sign in</a>
+            </p>
+
+            <!-- Theme & Lang -->
+            <div style="display: flex; justify-content: center; gap: var(--space-2); margin-top: var(--space-4);">
+                <button class="btn-icon" id="theme-toggle" aria-label="Toggle theme">
+                    <span class="icon-sun">☀️</span>
+                    <span class="icon-moon">🌙</span>
+                </button>
+                <button class="btn-icon" id="lang-toggle" aria-label="Toggle language">
+                    <span style="font-size: 0.75rem; font-weight: 600;">عربي</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/theme.js"></script>
+    <script>
+        // Role tab switching
+        document.querySelectorAll('.role-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                const userType = tab.dataset.type;
+                document.getElementById('user-type').value = userType;
+                document.getElementById('doctor-fields').style.display =
+                    userType === 'doctor' ? 'block' : 'none';
+
+                const licenseInput = document.getElementById('license-number');
+                const specialtyInput = document.getElementById('specialty');
+                licenseInput.required = userType === 'doctor';
+                specialtyInput.required = userType === 'doctor';
+            });
+        });
+
+        // Form submission
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const errorEl = document.getElementById('register-error');
+            const submitBtn = document.getElementById('submit-btn');
+
+            errorEl.style.display = 'none';
+
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            if (password !== confirmPassword) {
+                errorEl.textContent = 'Passwords do not match';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner"></span>';
+
+            const userType = document.getElementById('user-type').value;
+            const data = {
+                email: document.getElementById('email').value,
+                password: password,
+                first_name: document.getElementById('first-name').value,
+                last_name: document.getElementById('last-name').value,
+                phone: document.getElementById('phone').value
+            };
+
+            if (userType === 'doctor') {
+                data.license_number = document.getElementById('license-number').value;
+                data.specialty = document.getElementById('specialty').value;
+            }
+
+            try {
+                const result = await Auth.register(userType, data);
+                if (result.success) {
+                    if (userType === 'doctor') {
+                        alert('Registration successful! Your account is pending approval.');
+                    }
+                    window.location.href = 'login.html';
+                } else {
+                    errorEl.textContent = result.error || 'Registration failed';
+                    errorEl.style.display = 'block';
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = `<span data-i18n="createAccount">${typeof i18n !== 'undefined' ? i18n.t('createAccount') : 'Create Account'}</span>`;
+                }
+            } catch (err) {
+                errorEl.textContent = 'Connection error. Please try again.';
+                errorEl.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<span data-i18n="createAccount">${typeof i18n !== 'undefined' ? i18n.t('createAccount') : 'Create Account'}</span>`;
+            }
+        });
+    </script>
+</body>
+
+</html>
